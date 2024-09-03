@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Image Section -->
+<div class="hero-image">
+    <div class="hero-background img-fluid"></div>
+    <!-- Hero Section -->
+    <section id="home" class="hero-content">
+        <div class="container">
+            <h1 class="display-4 fw-bold slide-in">Welcome to FowlTrak</h1>
+            <p class="lead fade-in">Efficiently manage your poultry farm with ease and precision.</p>
+            <a href="{{ url_for('main.register_page') }}" class="btn btn-info btn-lg mt-4 slide-in">Get Started</a>
+            <a href="{{ url_for('main.login_page') }}" class="btn btn-outline-info btn-lg mt-4 slide-in">Log In</a>
+        </div>
+    </section>
+</div>
+
+<!-- Features Section -->
+<section id="features" class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-effect">
+                    <img src="{{ url_for('static', filename='images/feature1.jpg') }}" class="card-img-top shadow-effect image-hover" alt="Inventory Management">
+                    <div class="card-body fade-in">
+                        <h5 class="card-title fw-bold">Inventory Management</h5>
+                        <p class="card-text">Keep track of your poultry, feed, and supplies with ease.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-effect">
+                    <img src="{{ url_for('static', filename='images/feature2.jpg') }}" class="card-img-top shadow-effect image-hover" alt="Health Monitoring">
+                    <div class="card-body fade-in">
+                        <h5 class="card-title fw-bold">Health Monitoring</h5>
+                        <p class="card-text">Record vaccinations, diseases, and mortality rates.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-effect">
+                    <img src="{{ url_for('static', filename='images/feature.jpg') }}" class="card-img-top shadow-effect image-hover" alt="Production Tracking">
+                    <div class="card-body fade-in">
+                        <h5 class="card-title fw-bold">Production Tracking</h5>
+                        <p class="card-text">Monitor egg production, meat yield, and growth rates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose FowlTrak Section -->
+<section id="benefits" class=" text-light py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-6 mb-4 fade-in">
+                <img src="{{ url_for('static', filename='images/benefit.jpg') }}" class="img-fluid shadow-effect image-hover" alt="Benefits">
+            </div>
+            <div class="col-md-6 fade-in">
+                <h2 class="fw-bold">Why Choose FowlTrak?</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Comprehensive Management</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> User-Friendly Interface</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Real-Time Data Tracking</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Secure and Reliable</li>
+                </ul>
+                <a href="#contact" class="btn btn-info btn-lg mt-4">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About FowlTrak Section -->
+<section id="about" class="py-5 text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-6 mb-4 fade-in">
+                <h2 class="fw-bold">About FowlTrak</h2>
+                <p class="fs-5">FowlTrak is dedicated to providing poultry farmers with a comprehensive and easy-to-use management system. Our platform helps you keep track of your poultry inventory, monitor health, and analyze productivity, ensuring your farm operates efficiently and profitably.</p>
+            </div>
+            <div class="col-md-6 fade-in">
+                <img src="{{ url_for('static', filename='images/about-us.jpg') }}" class="img-fluid shadow-effect image-hover" alt="About Us">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 text-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Contact Us</h2>
+            <p>Have questions or need assistance? Reach out to us, and we'll be happy to help.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 fade-in">
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-6 text-center fade-in">
+                <h4 class="fw-bold">Our Office</h4>
+                <p>123 Poultry Farm Lane, Agriculture Town, Farmville</p>
+                <p>Email: support@fowltrak.com</p>
+                <p>Phone: +1 (800) 123-4567</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
