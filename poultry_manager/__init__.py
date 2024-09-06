@@ -22,7 +22,7 @@ def create_app():
 
     # import routes and models
     from . import routes
-    from . import models
+    from .models import base_model, user, farm, flock, production, health_record, inventory
 
     # register the blueprint for routes
     app.register_blueprint(bp)
