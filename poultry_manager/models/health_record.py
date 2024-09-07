@@ -2,7 +2,6 @@
 
 from poultry_manager import db
 from .base_model import BaseModel, ntplib_time
-from sqlalchemy.dialects.postgresql import UUID
 
 
 class HealthRecord(BaseModel):
@@ -17,7 +16,7 @@ class HealthRecord(BaseModel):
     vaccination_date = db.Column(db.DateTime(), nullable=True)
 
     # Foreign Key
-    farm_id = db.Column(UUID(as_uuid=True), db.ForeignKey('farms.id'), nullable=False, index=True)
+    farm_id = db.Column(db.Integer(), db.ForeignKey('farms.id'), nullable=False, index=True)
 
     def __repr__(self):
         """String representation of the health record."""

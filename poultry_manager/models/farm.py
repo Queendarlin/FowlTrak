@@ -1,6 +1,5 @@
 # Farm Model
 
-from sqlalchemy.dialects.postgresql import UUID
 from poultry_manager import db
 from .base_model import BaseModel
 
@@ -13,7 +12,7 @@ class Farm(BaseModel):
     location = db.Column(db.String(200), nullable=False, index=True)
 
     # Foreign Key
-    owner_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id'), nullable=False, index=True)
+    owner_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False, index=True)
 
     # Relationships
     inventory = db.relationship('Inventory', backref='farm', lazy=True, cascade="all, delete-orphan")

@@ -2,7 +2,6 @@
 
 from poultry_manager import db
 from .base_model import BaseModel
-from sqlalchemy.dialects.postgresql import UUID
 
 
 class Flock(BaseModel):
@@ -16,7 +15,7 @@ class Flock(BaseModel):
     sold = db.Column(db.Integer(), default=0)
 
     # Foreign Key
-    farm_id = db.Column(UUID(as_uuid=True), db.ForeignKey('farms.id'), nullable=False, index=True)
+    farm_id = db.Column(db.Integer(), db.ForeignKey('farms.id'), nullable=False, index=True)
 
     # Relationships
     production_records = db.relationship('Production', backref='flock', lazy=True, cascade="all, delete-orphan")
