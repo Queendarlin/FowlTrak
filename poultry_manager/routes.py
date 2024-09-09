@@ -2,7 +2,8 @@ from flask import render_template, url_for, Blueprint, redirect, flash
 from flask_login import logout_user, login_user, login_required, current_user
 from poultry_manager.forms import RegisterForm, LoginForm
 from poultry_manager import db
-from poultry_manager.models.user import User
+from poultry_manager.models.user import User, RoleEnum
+from poultry_manager.middleware.access_control import admin_required, worker_required
 
 bp = Blueprint('main', __name__)
 
@@ -66,37 +67,67 @@ def logout_page():
     return redirect(url_for('main.home_page'))
 
 
-@bp.route('/dashboard')
+@bp.route('/admin-dashboard')
 @login_required
-def dashboard_page():
-    return render_template('dashboard.html')
+@admin_required
+def admin_dashboard():
+    """Admin-only dashboard showing farm data and worker management"""
+    # Logic for admin dashboard
+    return render_template('admin_dashboard.html')
+
+
+@bp.route('/promote/<int:user_id>')
+@login_required
+@admin_required
+def promote_user(user_id):
+    """Admin promotes a worker to admin"""
+    user = User.query.get(user_id)
+    if user and user.is_worker():
+        user.role = RoleEnum.ADMIN
+        db.session.commit()
+        flash(f'{user.username} has been promoted to admin.', category='success')
+    else:
+        flash('User not found or already an admin.', category='danger')
+    return redirect(url_for('admin_dashboard'))
+
+
+@bp.route('/demote/<int:user_id>')
+@login_required
+@admin_required
+def demote_user(user_id):
+    """Admin demotes an admin back to worker"""
+    user = User.query.get(user_id)
+    if user and user.is_admin():
+        user.role = RoleEnum.WORKER
+        db.session.commit()
+        flash(f'{user.username} has been demoted to worker.', category='success')
+    else:
+        flash('User not found or already a worker.', category='danger')
+    return redirect(url_for('admin_dashboard'))
+
+
+@bp.route('/worker-dashboard')
+@login_required
+@worker_required
+def worker_dashboard():
+    """Worker-only dashboard to enter farm records"""
+    # Logic for worker dashboard
+    return render_template('worker_dashboard.html')
 
 
 @bp.route('/inventory')
 def inventory_page():
+    # logic for inventory
     return render_template('inventory.html')
 
 
 @bp.route('/health-report')
 def health_page():
+    # logic for health records
     return render_template('health.html')
 
 
 @bp.route('/production-reports')
 def production_page():
+    # logic for production record
     return render_template('production.html')
-
-
-@bp.route('/user-management')
-def user_page():
-    return render_template('logout.html')
-
-
-@bp.route('/account-settings', methods=['GET', 'POST'])
-def account_settings():
-    return render_template('account_settings.html')
-
-
-@bp.route('/update_account', methods=['POST'])
-def update_account():
-    return url_for('account_settings')

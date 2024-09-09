@@ -72,3 +72,11 @@ class User(BaseModel, UserMixin):
     def get_farms(self):
         """Returns all farms owned by the user."""
         return self.farms.all()
+
+    def is_admin(self):
+        """Check if the user is an admin"""
+        return self.role == RoleEnum.ADMIN
+
+    def is_worker(self):
+        """Check if the user is a worker"""
+        return self.role == RoleEnum.WORKER
