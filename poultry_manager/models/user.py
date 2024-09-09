@@ -4,6 +4,21 @@ from poultry_manager import db, bcrypt
 from enum import Enum
 from flask_login import UserMixin
 from .base_model import BaseModel
+from poultry_manager import login_manager
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """
+        Load a user given their user ID.
+
+        Args:
+            user_id (int): The ID of the user.
+
+        Returns:
+            User: The user object with the specified user ID.
+        """
+    return User.query.get(int(user_id))
 
 
 # Model for different roles
@@ -16,6 +31,7 @@ class User(BaseModel, UserMixin):
     """ Class to represent the users table """
     __tablename__ = 'users'
 
+    username = db.Column(db.String(length=50), nullable=False, unique=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.Enum(RoleEnum), nullable=False, default=RoleEnum.WORKER, index=True)
@@ -23,7 +39,12 @@ class User(BaseModel, UserMixin):
     # Relationships
     farms = db.relationship('Farm', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
 
-    # Validate password
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+
+        # Validate password
     @property
     def password(self):
         raise AttributeError('Password is not a readable attribute')

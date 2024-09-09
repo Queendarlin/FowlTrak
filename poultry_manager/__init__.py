@@ -3,12 +3,14 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from .config import Config
-from .routes import bp
+from flask_login import LoginManager
+
 
 # Instantiate the extensions without an app
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
+login_manager = LoginManager()
 
 
 def create_app():
@@ -20,11 +22,17 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
 
+    # Flask-Login initialization
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'  # Redirect to 'login' when login is required
+    login_manager.login_message_category = 'info'
+
     # import routes and models
     from . import routes
     from .models import base_model, user, farm, flock, production, health_record, inventory
 
-    # register the blueprint for routes
+    # Import models and register blueprints after extensions are initialized
+    from .routes import bp
     app.register_blueprint(bp)
 
     return app

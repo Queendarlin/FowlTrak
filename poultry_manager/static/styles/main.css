@@ -14,21 +14,16 @@ body {
     margin-left: 30px;
 }
 
-.hero-image {
-    position: relative;
-    overflow: hidden;
-    height: 100vh;
-}
-
+/*
 .hero-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('/static/images/hero-3.jpg') no-repeat center center;
+    background: url('/static/images/hero1.jpg') no-repeat center center;
     background-size: cover;
-    z-index: -1;
+    z-index: 1;
 }
 
 .hero-content {
@@ -41,7 +36,9 @@ body {
     text-align: center;
     color: white;
     background: rgba(0, 0, 0, 0.3);
+    z-index: 4;
 }
+*/
 
 .shadow-effect {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
@@ -51,9 +48,6 @@ body {
     border-radius: 0.25rem;
 }
 
-.img-fluid {
-    border-radius: 0.25rem;
-}
 
 .card {
     border: none;
@@ -61,7 +55,8 @@ body {
 }
 
 .card img {
-    height: 200px;
+    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 
@@ -99,6 +94,23 @@ html {
     opacity: 1;
 }
 
+/* Slide-in Animation */
+@keyframes slideIn {
+  from {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideIn 2s ease-in-out;
+}
+
+
 /* Image Hover Effects */
 .image-hover {
     transition: transform 0.3s ease-in-out;
@@ -107,13 +119,6 @@ html {
 .image-hover:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* Interactive Hero Section */
-.slide-in {
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .slide-in.visible {
