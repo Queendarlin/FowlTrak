@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, FloatField, IntegerField
+from wtforms import SelectField, DateField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange, Optional
 from poultry_manager.models.user import User
 
 
@@ -27,3 +28,47 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Login')
 
+
+class InventoryForm(FlaskForm):
+    item_name = StringField('Item Name', validators=[DataRequired()])
+    category = SelectField('Category', choices=[('Livestock', 'Livestock'),
+                                                ('Supplies', 'Supplies'), ('Equipment', 'Equipment'),
+                                                ('Utilities', 'Utilities')], validators=[DataRequired()])
+    quantity = IntegerField('Quantity', validators=[DataRequired(), NumberRange(min=1)])
+    unit = StringField('Unit (e.g., kg, liters, bags, pc)', validators=[DataRequired()])
+    cost = FloatField('Cost', validators=[DataRequired()])
+    currency = SelectField('Currency', choices=[('USD', 'USD'), ('EUR', 'EUR'),
+                                                ('NGN', 'NGN')], validators=[DataRequired()])
+    purchase_order_number = StringField('Purchase Order Number', validators=[Optional()])
+    purchase_date = DateField('Purchase Date', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Submit Record')
+
+
+class ProductionForm(FlaskForm):
+    """Form for recording production data."""
+    number_eggs_collected = IntegerField('Number of Eggs Collected',
+                                         validators=[DataRequired(),
+                                                     NumberRange(min=0, message="Must be a non-negative value")])
+    eggs_sold = IntegerField('Number of Eggs Sold',
+                             validators=[NumberRange(min=0,
+                                                     message="Must be a non-negative value")], default=0)
+    date_collected = DateField('Date Collected', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Submit Record')
+
+
+class FlockForm(FlaskForm):
+    breed = StringField('Breed', validators=[DataRequired()])
+    quantity = IntegerField('Quantity', validators=[DataRequired(), NumberRange(min=1)])
+    age = IntegerField('Age (Days)', validators=[DataRequired(), NumberRange(min=0)])
+    deaths = IntegerField('Number of Deaths', default=0, validators=[NumberRange(min=0)])
+    sold = IntegerField('Number of Chickens Sold', default=0, validators=[NumberRange(min=0)])
+    submit = SubmitField('Submit Record')
+
+
+class HealthRecordForm(FlaskForm):
+    number_sick = IntegerField('Number of Sick Birds',
+                               validators=[NumberRange(min=0, message="Must be a non-negative value")])
+    symptom = StringField('Symptoms', validators=[Length(max=200), DataRequired()])
+    medication_given = StringField('Medication Given', validators=[Length(max=200), DataRequired()])
+    date_reported = DateField('Date Reported', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Submit Record')

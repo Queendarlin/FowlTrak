@@ -36,9 +36,6 @@ class User(BaseModel, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.Enum(RoleEnum), nullable=False, default=RoleEnum.WORKER, index=True)
 
-    # Relationships
-    farms = db.relationship('Farm', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
-
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
@@ -67,11 +64,6 @@ class User(BaseModel, UserMixin):
         """Validates the role against allowed roles."""
         if not isinstance(role, RoleEnum):
             raise ValueError(f"Invalid role: {role}")
-
-    # Method to retrieve all farm owned by a user
-    def get_farms(self):
-        """Returns all farms owned by the user."""
-        return self.farms.all()
 
     def is_admin(self):
         """Check if the user is an admin"""

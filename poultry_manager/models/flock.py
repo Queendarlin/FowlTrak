@@ -10,15 +10,9 @@ class Flock(BaseModel):
 
     breed = db.Column(db.String(50), nullable=False)
     quantity = db.Column(db.Integer(), nullable=False)
-    age_weeks = db.Column(db.Integer(), nullable=False)
+    age = db.Column(db.Integer(), nullable=False)
     deaths = db.Column(db.Integer(), default=0)
     sold = db.Column(db.Integer(), default=0)
-
-    # Foreign Key
-    farm_id = db.Column(db.Integer(), db.ForeignKey('farms.id'), nullable=False, index=True)
-
-    # Relationships
-    production_records = db.relationship('Production', backref='flock', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Flock {self.breed} ({self.quantity} chickens), {self.age_weeks} weeks old>"

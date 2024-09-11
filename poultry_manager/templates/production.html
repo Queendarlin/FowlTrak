@@ -1,0 +1,62 @@
+{% extends "base_workers_dashboard.html" %}
+
+{% block title %}Add Production Record{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Add Production Record</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('main.add_production') }}">
+                            {{ form.hidden_tag() }}
+
+                            <div class="mb-3">
+                                <label for="number_eggs_collected" class="form-label">Number of Eggs Collected</label>
+                                {{ form.number_eggs_collected(class="form-control") }}
+                                {% if form.number_eggs_collected.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.number_eggs_collected.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="eggs_sold" class="form-label">Number of Eggs Sold</label>
+                                {{ form.eggs_sold(class="form-control") }}
+                                {% if form.eggs_sold.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.eggs_sold.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="date_collected" class="form-label">Date Collected</label>
+                                {{ form.date_collected(class="form-control") }}
+                                {% if form.date_collected.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.date_collected.errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                {{ form.submit(class="btn btn-success rounded-pill") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

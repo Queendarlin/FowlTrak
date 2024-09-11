@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="bg-dark text-white">
+        <div class="sidebar-header">
+            <h3>FowlTrak Admin</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#dashboard" class="text-white"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li>
+                <a href="#orders" class="text-white"><i class="fas fa-shopping-cart"></i> Orders</a>
+            </li>
+            <li>
+                <a href="#inventory" class="text-white"><i class="fas fa-warehouse"></i> Inventory</a>
+            </li>
+            <li>
+                <a href="#customers" class="text-white"><i class="fas fa-users"></i> Customers</a>
+            </li>
+            <li>
+                <a href="#settings" class="text-white"><i class="fas fa-cogs"></i> Settings</a>
+            </li>
+            <li>
+                <a href="{{ url_for('main.logout_page') }}" class="text-white"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content" class="container-fluid p-4">
+        <!-- Dashboard Header -->
+        <h2>Admin Dashboard</h2>
+        <p>Welcome back, {{ current_user.username }}!</p>
+
+        <!-- Cards Section -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Orders</h5>
+                        <p class="card-text">350</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Revenue</h5>
+                        <p class="card-text">$7,000</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Pending Orders</h5>
+                        <p class="card-text">12</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Low Inventory</h5>
+                        <p class="card-text">5 items</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Section -->
+        <h4 class="mt-4">Recent Activity</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#1234</td>
+                    <td>John Doe</td>
+                    <td><span class="badge bg-success">Completed</span></td>
+                    <td>$120</td>
+                    <td>2024-09-10</td>
+                </tr>
+                <tr>
+                    <td>#1235</td>
+                    <td>Jane Smith</td>
+                    <td><span class="badge bg-warning">Pending</span></td>
+                    <td>$250</td>
+                    <td>2024-09-09</td>
+                </tr>
+                <tr>
+                    <td>#1236</td>
+                    <td>Michael Johnson</td>
+                    <td><span class="badge bg-danger">Cancelled</span></td>
+                    <td>$75</td>
+                    <td>2024-09-08</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Chart Placeholder -->
+        <h4 class="mt-4">Sales Overview</h4>
+        <div class="card">
+            <div class="card-body">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

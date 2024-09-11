@@ -1,0 +1,68 @@
+{% extends 'base_workers_dashboard.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h3>Add Inventory Item</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.add_flock') }}">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.breed.label(class="form-label") }}
+                            {{ form.breed(class="form-control", placeholder="Enter breed") }}
+                            {% if form.breed.errors %}
+                                <div class="text-danger">
+                                    {{ form.breed.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.quantity.label(class="form-label") }}
+                            {{ form.quantity(class="form-control", placeholder="Enter quantity") }}
+                            {% if form.quantity.errors %}
+                                <div class="text-danger">
+                                    {{ form.quantity.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.age.label(class="form-label") }}
+                            {{ form.age(class="form-control", placeholder="Enter age in days") }}
+                            {% if form.age.errors %}
+                                <div class="text-danger">
+                                    {{ form.age.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.deaths.label(class="form-label") }}
+                            {{ form.deaths(class="form-control", placeholder="Enter deaths") }}
+                            {% if form.deaths.errors %}
+                                <div class="text-danger">
+                                    {{ form.deaths.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.sold.label(class="form-label") }}
+                            {{ form.sold(class="form-control", placeholder="Enter sold quantity") }}
+                            {% if form.sold.errors %}
+                                <div class="text-danger">
+                                    {{ form.sold.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            {{ form.submit(class="btn btn-success rounded-pill") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -14,32 +14,6 @@ body {
     margin-left: 30px;
 }
 
-/*
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('/static/images/hero1.jpg') no-repeat center center;
-    background-size: cover;
-    z-index: 1;
-}
-
-.hero-content {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 4;
-}
-*/
-
 .shadow-effect {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
 }
@@ -124,4 +98,15 @@ html {
 .slide-in.visible {
     opacity: 1.5;
     transform: translateY(0);
+}
+
+.flash-message {
+            position: fixed;
+            font-size: 1.3rem;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            margin: 0 auto;
+            max-width: 800px;
 }

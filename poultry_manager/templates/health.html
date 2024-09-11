@@ -1,0 +1,69 @@
+{% extends 'base_workers_dashboard.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h3>Add Health Record</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.add_health_record') }}">
+                        {{ form.hidden_tag() }}
+
+                        <!-- Number of Sick Birds -->
+                        <div class="mb-3">
+                            {{ form.number_sick.label(class="form-label") }}
+                            {{ form.number_sick(class="form-control", placeholder="Enter number of sick birds") }}
+                            {% if form.number_sick.errors %}
+                                <div class="text-danger">
+                                    {{ form.number_sick.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Symptom Field -->
+                        <div class="mb-3">
+                            {{ form.symptom.label(class="form-label") }}
+                            {{ form.symptom(class="form-control", placeholder="Enter symptom(s)") }}
+                            {% if form.symptom.errors %}
+                                <div class="text-danger">
+                                    {{ form.symptom.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Medication Given Field -->
+                        <div class="mb-3">
+                            {{ form.medication_given.label(class="form-label") }}
+                            {{ form.medication_given(class="form-control", placeholder="Enter medication given") }}
+                            {% if form.medication_given.errors %}
+                                <div class="text-danger">
+                                    {{ form.medication_given.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Date reported Field -->
+                        <div class="mb-3">
+                            {{ form.date_reported.label(class="form-label") }}
+                            {{ form.date_reported(class="form-control", placeholder="Enter medication given") }}
+                            {% if form.date_reported.errors %}
+                                <div class="text-danger">
+                                    {{ form.date_reported.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end">
+                            {{ form.submit(class="btn btn-success rounded-pill") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

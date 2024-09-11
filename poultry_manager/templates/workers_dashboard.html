@@ -1,0 +1,152 @@
+{% extends 'base_workers_dashboard.html' %}
+{% block content %}
+<style>
+    /* Custom Styles for Dashboard */
+    body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        background-color: purple;
+    }
+    .wrapper {
+        display: flex;
+        flex: 1;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 250px;
+        background-color: #343a40;
+        min-height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-top: 60px;
+    }
+    .sidebar .nav-link {
+        color: #adb5bd;
+        padding: 15px 20px;
+        display: block;
+        transition: background 0.3s, color 0.3s;
+    }
+    .sidebar .nav-link:hover {
+        background-color: #495057;
+        color: #fff;
+    }
+    .sidebar .active {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    /* Content Styles */
+    .content {
+        margin-left: 150px;
+        width: 100%;
+    }
+    .card-custom {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+    .card-custom:hover {
+        transform: scale(1.05);
+    }
+
+    /* Footer Adjustment */
+    footer {
+        position: relative;
+    }
+</style>
+
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('main.worker_dashboard') }}">
+                    <i class="fa-solid fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.add_inventory') }}">
+                    <i class="fa-solid fa-boxes me-2"></i> Inventory
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.add_production') }}">
+                    <i class="fa-solid fa-egg me-2"></i> Production
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.add_health_record') }}">
+                    <i class="fa-solid fa-heartbeat me-2"></i> Health Monitoring
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.add_flock') }}">
+                    <i class="fa-solid fa-seedling me-2"></i> Flock Records
+                </a>
+            </li>
+        </ul>
+        <div class="mt-5 p-3 text-white">
+            Logged in as: <strong>{{ role }}</strong>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Welcome Message -->
+        <div class="welcome-message text-white">
+            <h1>Welcome to Your Farm Dashboard!</h1>
+            <p class="lead">Use the dashboard to enter daily farm activities efficiently.</p>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="row">
+            <!-- Production Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-custom text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><i class="fa-solid fa-egg"></i> Production</h5>
+                        <p class="card-text text-center">Add daily egg production records.</p>
+                        <a href="{{ url_for('main.add_production') }}" class="btn btn-light d-block">Enter Production Records</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Monitoring Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-custom text-white bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><i class="fa-solid fa-heartbeat"></i> Health Monitoring</h5>
+                        <p class="card-text text-center">Log health reports for the flock.</p>
+                        <a href="{{ url_for('main.add_health_record') }}" class="btn btn-light d-block">Report Flock's Health</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-custom text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><i class="fa-solid fa-boxes"></i> Inventory</h5>
+                        <p class="card-text text-center">Manage farm inventory.</p>
+                        <a href="{{ url_for('main.add_inventory') }}" class="btn btn-light d-block">Add Inventory Records</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flock Records Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card card-custom text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><i class="fa-solid fa-seedling"></i> Flock Records</h5>
+                        <p class="card-text text-center">Track flock details and performance.</p>
+                        <a href="{{ url_for('main.add_flock') }}" class="btn btn-light d-block">Go to Flock Records</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

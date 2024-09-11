@@ -29,7 +29,7 @@ def create_app():
 
     # import routes and models
     from . import routes
-    from .models import base_model, user, farm, flock, production, health_record, inventory
+    from poultry_manager.models import base_model, user, flock, production, health_record, inventory
 
     # Import models and register blueprints after extensions are initialized
     from .routes import bp

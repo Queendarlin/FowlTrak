@@ -1,7 +1,111 @@
-{% extends 'base.html'%}
-
-{% block title %}Inventory - FowlTrak{% endblock %}
+{% extends 'base_workers_dashboard.html' %}
 
 {% block content %}
+<body>
+
+<div class="container mt-5 mb-5 fs-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h3>Add Inventory Item</h3>
+                </div>
+                <div class="card-body bg-light">
+                    <form method="POST" action="{{ url_for('main.add_inventory') }}">
+                        {{ form.hidden_tag() }}
+
+                        <!-- Item Name -->
+                        <div class="mb-3">
+                            <label for="item_name" class="form-label">Item Name</label>
+                            {{ form.item_name(class="form-control", id="item_name", placeholder="Enter item name") }}
+                            {% if form.item_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.item_name.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            {{ form.category(class="form-select", id="category") }}
+                            {% if form.category.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.category.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            {{ form.quantity(class="form-control", id="quantity", placeholder="Enter quantity") }}
+                            {% if form.quantity.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.quantity.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Unit -->
+                        <div class="mb-3">
+                            <label for="unit" class="form-label">Unit</label>
+                            {{ form.unit(class="form-control", id="unit", placeholder="Enter unit (e.g., kg, liters, bags, pc)") }}
+                            {% if form.unit.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.unit.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Cost -->
+                        <div class="mb-3">
+                            <label for="cost" class="form-label">Cost</label>
+                            {{ form.cost(class="form-control", id="cost", placeholder="Enter cost") }}
+                            {% if form.cost.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.cost.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Currency -->
+                        <div class="mb-3">
+                            <label for="currency" class="form-label">Currency</label>
+                            {{ form.currency(class="form-select", id="currency") }}
+                            {% if form.currency.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.currency.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Purchase Order Number -->
+                        <div class="mb-3">
+                            <label for="purchase_order_number" class="form-label">Purchase Order Number (Optional)</label>
+                            {{ form.purchase_order_number(class="form-control", id="purchase_order_number", placeholder="Enter purchase order number") }}
+                        </div>
+
+                        <!-- Purchase Date -->
+                        <div class="mb-3">
+                            <label for="purchase_date" class="form-label">Purchase Date</label>
+                            {{ form.purchase_date(class="form-control", id="purchase_date") }}
+                            {% if form.purchase_date.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.purchase_date.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end">
+                            {{ form.submit(class="btn btn-success rounded-pill") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

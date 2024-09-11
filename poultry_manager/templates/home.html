@@ -12,23 +12,23 @@
 
     <!-- Content on top of the image -->
     <div class="container position-absolute top-50 start-50 translate-middle text-center text-white px-4">
-      <h1 class="display-4 fw-bold slide-in">Welcome to FowlTrak</h1>
+      <h1 class="display-4 fw-bold slide-in text-warning">Welcome to FowlTrak</h1>
       <p class="lead slide-in">Efficient and Comprehensive Poultry Farm Management System</p>
-      <a href="{{ url_for('main.register_page') }}" class="btn btn-info btn-lg mt-4 slide-in">Get Started</a>
+      <a href="{{ url_for('main.register_page') }}" class="btn btn-info btn-lg mt-4 slide-in rounded-pill">Get Started</a>
     </div>
   </div>
 </section>
 
 <!-- Features Section -->
-<section id="features" class="py-5">
+<section id="features" class="py-5 fs-5">
     <div class="container">
         <div class="row text-center">
             <div class="col-12 col-md-4 mb-4">
                 <div class="card h-100 shadow-effect">
                     <img src="{{ url_for('static', filename='images/feature1.jpg') }}" class="card-img-top shadow-effect image-hover img-fluid" alt="Inventory Management">
                     <div class="card-body fade-in">
-                        <h5 class="card-title fw-bold">Inventory Management</h5>
-                        <p class="card-text">Keep track of your poultry, feed, and supplies with ease.</p>
+                        <h5 class="card-title fw-bold">Comprehensive Inventory Management</h5>
+                        <p class="card-text">The platform provides detailed tracking and management of various inventory items, including feed, equipment, and supplies. Users can monitor quantities, costs, and purchase orders while generating insightful reports on inventory status. </p>
                     </div>
                 </div>
             </div>
@@ -36,8 +36,8 @@
                 <div class="card h-100 shadow-effect">
                     <img src="{{ url_for('static', filename='images/feature2.jpg') }}" class="card-img-top shadow-effect image-hover img-fluid" alt="Health Monitoring">
                     <div class="card-body fade-in">
-                        <h5 class="card-title fw-bold">Health Monitoring</h5>
-                        <p class="card-text">Record vaccinations, diseases, and mortality rates.</p>
+                        <h5 class="card-title fw-bold">Detailed Health Records Management</h5>
+                        <p class="card-text">The system allows for the meticulous recording of health issues. Users can track health records over time, ensuring timely interventions and effective health management strategies, which ultimately contribute to the productivity and longevity of the flock.</p>
                     </div>
                 </div>
             </div>
@@ -45,8 +45,8 @@
                 <div class="card h-100 shadow-effect">
                     <img src="{{ url_for('static', filename='images/feature.jpg') }}" class="card-img-top shadow-effect image-hover img-fluid" alt="Production Tracking">
                     <div class="card-body fade-in">
-                        <h5 class="card-title fw-bold">Production Tracking</h5>
-                        <p class="card-text">Monitor egg production, meat yield, and growth rates.</p>
+                        <h5 class="card-title fw-bold">Enhanced Production Report</h5>
+                        <p class="card-text">FowlTrak's advanced production reporting capabilities enable users to track and analyze egg collection, sales, and production metrics. By recording and summarizing production data, the platform helps farm owners and managers make informed decisions regarding production strategies.</p>
                     </div>
                 </div>
             </div>
@@ -55,19 +55,27 @@
 </section>
 
 <!-- Why Choose FowlTrak Section -->
-<section id="benefits" class="text-light py-5">
+<section id="benefits" class="text-light py-5 fs-5">
     <div class="container">
         <div class="row text-center">
             <div class="col-12 col-md-6 mb-4 fade-in">
                 <img src="{{ url_for('static', filename='images/benefit.jpg') }}" class="img-fluid shadow-effect image-hover" alt="Benefits">
             </div>
             <div class="col-12 col-md-6 fade-in">
-                <h2 class="fw-bold">Why Choose FowlTrak?</h2>
+                <h2 class="text-warning mb-4">Why Choose FowlTrak?</h2>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Comprehensive Management</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> User-Friendly Interface</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Real-Time Data Tracking</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Secure and Reliable</li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle-fill text-primary fs-3 me-2"></i> Comprehensive Management
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle-fill text-primary fs-3 me-2"></i> Real-Time Data Tracking
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle-fill text-primary fs-3 me-2"></i> User-Friendly Interface
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check-circle-fill text-primary fs-3 me-2"></i> Secure and Reliable
+                    </li>
                 </ul>
                 <a href="#contact" class="btn btn-info btn-lg mt-4">Contact Us</a>
             </div>
@@ -75,13 +83,14 @@
     </div>
 </section>
 
+
 <!-- About FowlTrak Section -->
-<section id="about" class="py-5 text-white">
+<section id="about" class="py-5 text-white fs-5">
     <div class="container">
         <div class="row text-center">
             <div class="col-12 col-md-6 mb-4 fade-in">
-                <h2 class="fw-bold">About FowlTrak</h2>
-                <p class="fs-5">FowlTrak is dedicated to providing poultry farmers with a comprehensive and easy-to-use management system. Our platform helps you keep track of your poultry inventory, monitor health, and analyze productivity, ensuring your farm operates efficiently and profitably.</p>
+                <h2 class="text-warning">About FowlTrak</h2>
+                <p>FowlTrak is dedicated to providing poultry farmers with a comprehensive and easy-to-use management system. Our platform helps you keep track of your poultry inventory, monitor health, and analyze productivity, ensuring your farm operates efficiently and profitably.</p>
             </div>
             <div class="col-12 col-md-6 fade-in">
                 <img src="{{ url_for('static', filename='images/about-us.jpg') }}" class="img-fluid shadow-effect image-hover" alt="About Us">
@@ -91,10 +100,10 @@
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="py-5 text-white">
+<section id="contact" class="py-5 text-white fs-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Contact Us</h2>
+            <h2 class="text-warning">Contact Us</h2>
             <p>Have questions or need assistance? Reach out to us, and we'll be happy to help.</p>
         </div>
         <div class="row">
