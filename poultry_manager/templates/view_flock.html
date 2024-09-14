@@ -33,6 +33,7 @@
                         </a>
                         <a href="{{ url_for('main.delete_record', model='flock', record_id=flock.id) }}"
                            class="btn btn-sm btn-danger delete-button d-inline-block m-2"
+                           data-delete-url="{{ url_for('main.delete_record', model='flock', record_id=flock.id) }}"
                            aria-label="Delete record for {{ flock.breed }}">
                            Delete
                         </a>

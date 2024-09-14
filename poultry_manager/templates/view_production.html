@@ -31,6 +31,7 @@
                         </a>
                         <a href="{{ url_for('main.delete_record', model='production', record_id=production.id) }}"
                            class="btn btn-sm btn-danger delete-button d-inline-block m-2"
+                           data-delete-url="{{ url_for('main.delete_record', model='production', record_id=production.id) }}"
                            aria-label="Delete production record for {{ production.number_eggs_collected }} eggs collected">
                            Delete
                         </a>

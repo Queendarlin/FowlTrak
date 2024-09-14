@@ -24,26 +24,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in inventories %}
+                    {% for inventory in inventories %}
                     <tr>
-                        <td>{{ item.item_name }}</td>
-                        <td>{{ item.category }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.unit }}</td>
-                        <td>{{ item.cost }}</td>
-                        <td>{{ item.currency }}</td>
-                        <td>{{ item.purchase_date.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ item.user.username }}</td>
+                        <td>{{ inventory.item_name }}</td>
+                        <td>{{ inventory.category }}</td>
+                        <td>{{ inventory.quantity }}</td>
+                        <td>{{ inventory.unit }}</td>
+                        <td>{{ inventory.cost }}</td>
+                        <td>{{ inventory.currency }}</td>
+                        <td>{{ inventory.purchase_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ inventory.user.username }}</td>
                         <td>
-                            <a href="{{ url_for('main.edit_record', model='inventory', record_id=item.id) }}"
+                            <a href="{{ url_for('main.edit_record', model='inventory', record_id=inventory.id) }}"
                                class="btn btn-primary btn-sm d-inline-block m-2"
                                data-bs-toggle="modal" data-bs-target="#editModal"
-                               aria-label="Edit inventory record for {{ item.item_name }}">
+                               aria-label="Edit inventory record for {{ inventory.item_name }}">
                                Edit
                             </a>
-                            <a href="{{ url_for('main.delete_record', model='inventory', record_id=item.id) }}"
+                            <a href="{{ url_for('main.delete_record', model='inventory', record_id=inventory.id) }}"
                                class="btn btn-danger btn-sm delete-button d-inline-block m-2"
-                               aria-label="Delete inventory record for {{ item.item_name }}">
+                               data-delete-url="{{ url_for('main.delete_record', model='inventory', record_id=inventory.id) }}"
+                               aria-label="Delete inventory record for {{ inventory.item_name }}">
                                Delete
                             </a>
                         </td>

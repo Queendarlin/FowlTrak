@@ -31,8 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent default action
 
-            const recordId = this.getAttribute('data-record-id');
-            const deleteUrl = `/delete_record/${recordId}`; // Adjust URL as needed
+            const deleteUrl = this.getAttribute('data-delete-url');
 
             Swal.fire({
                 title: 'Are you sure?',

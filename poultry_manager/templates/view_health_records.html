@@ -16,23 +16,24 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in health_records %}
+                {% for health_record in health_records %}
                 <tr>
-                    <td>{{ item.number_sick }}</td>
-                    <td>{{ item.symptom }}</td>
-                    <td>{{ item.medication_given }}</td>
-                    <td>{{ item.date_reported.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ item.user.username }}</td>
+                    <td>{{ health_record.number_sick }}</td>
+                    <td>{{ health_record.symptom }}</td>
+                    <td>{{ health_record.medication_given }}</td>
+                    <td>{{ health_record.date_reported.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ health_record.user.username }}</td>
                     <td>
-                        <a href="{{ url_for('main.edit_record', model='health_record', record_id=item.id) }}"
+                        <a href="{{ url_for('main.edit_record', model='health_record', record_id=health_record.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2"
                            data-bs-toggle="modal" data-bs-target="#editModal"
-                           aria-label="Edit record for health report on {{ item.date_reported.strftime('%Y-%m-%d') }}">
+                           aria-label="Edit record for health report on {{ health_record.date_reported.strftime('%Y-%m-%d') }}">
                            Edit
                         </a>
-                        <a href="{{ url_for('main.delete_record', model='health_record', record_id=item.id) }}"
+                        <a href="{{ url_for('main.delete_record', model='health_record', record_id=health_record.id) }}"
                            class="btn btn-sm btn-danger delete-button d-inline-block m-2"
-                           aria-label="Delete record for health report on {{ item.date_reported.strftime('%Y-%m-%d') }}">
+                           data-delete-url="{{ url_for('main.delete_record', model='health_record', record_id=health_record.id) }}"
+                           aria-label="Delete record for health report on {{ health_record.date_reported.strftime('%Y-%m-%d') }}">
                            Delete
                         </a>
                     </td>
