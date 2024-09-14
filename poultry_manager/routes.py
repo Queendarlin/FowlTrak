@@ -1,4 +1,4 @@
-from flask import render_template, url_for, Blueprint, redirect, flash, jsonify, request
+from flask import render_template, url_for, Blueprint, redirect, flash
 from flask_login import logout_user, login_user, login_required, current_user
 from poultry_manager.forms import RegisterForm, LoginForm, InventoryForm, ProductionForm, FlockForm, HealthRecordForm
 from poultry_manager import db
@@ -104,7 +104,8 @@ def add_inventory():
             unit=form.unit.data,
             cost=form.cost.data,
             currency=form.currency.data,
-            purchase_order_number=form.purchase_order_number.data
+            purchase_order_number=form.purchase_order_number.data,
+            user_id=current_user.id
         )
         db.session.add(new_inventory)
         db.session.commit()
@@ -124,7 +125,8 @@ def add_production():
         production_record = Production(
             number_eggs_collected=form.number_eggs_collected.data,
             eggs_sold=form.eggs_sold.data,
-            date_collected=form.date_collected.data
+            date_collected=form.date_collected.data,
+            user_id=current_user.id
         )
         db.session.add(production_record)
         db.session.commit()
@@ -145,7 +147,8 @@ def add_flock():
             quantity=form.quantity.data,
             age=form.age.data,
             deaths=form.deaths.data,
-            sold=form.sold.data
+            sold=form.sold.data,
+            user_id=current_user.id
         )
         db.session.add(new_flock)
         db.session.commit()
@@ -165,7 +168,8 @@ def add_health_record():
             number_sick=form.number_sick.data,
             symptom=form.symptom.data,
             medication_given=form.medication_given.data,
-            date_reported=form.date_reported.data
+            date_reported=form.date_reported.data,
+            user_id=current_user.id
         )
         db.session.add(health_record)
         db.session.commit()
@@ -264,21 +268,44 @@ def edit_record(model, record_id):
     elif model == 'flock':
         record = Flock.query.get_or_404(record_id)
         form = FlockForm(obj=record)
-    elif model == 'health':
+    elif model == 'health_record':
         record = HealthRecord.query.get_or_404(record_id)
         form = HealthRecordForm(obj=record)
     else:
-        return jsonify({'success': False, 'message': 'Invalid model.'}), 400
+        flash('Invalid model.', 'danger')
+        return redirect(url_for('main.admin_dashboard'))
 
     # Handle form submission
     if form.validate_on_submit():
         form.populate_obj(record)
         db.session.commit()
-        return jsonify({'success': True, 'message': f'{model.capitalize()} record updated.'})
+        flash(f'{model.capitalize()} record updated successfully.', 'success')
+        return redirect(url_for('main.admin_dashboard'))
 
     # For GET requests, return the form HTML to load into the modal
-    if request.method == 'GET':
-        return render_template('partials/edit_form.html', form=form, model=model)
+    return render_template('modal_form.html', form=form, model=model, record=record)
+
+
+@bp.route('/edit/<model>/<int:record_id>', methods=['GET'])
+@login_required
+@admin_required
+def edit_record_modal(model, record_id):
+    # Query the correct record based on the model
+    if model == 'inventory':
+        record = Inventory.query.get(record_id)
+        form = InventoryForm(obj=record)
+    elif model == 'flock':
+        record = Flock.query.get(record_id)
+        form = FlockForm(obj=record)
+    elif model == 'production':
+        record = Production.query.get(record_id)
+        form = ProductionForm(obj=record)
+    elif model == 'health_record':
+        record = HealthRecord.query.get(record_id)
+        form = HealthRecordForm(obj=record)
+
+    # Render the modal form template for the record
+    return render_template('modal_form.html', form=form, model=model, record=record)
 
 
 @bp.route('/delete-record/<model>/<int:record_id>')
@@ -294,7 +321,7 @@ def delete_record(model, record_id):
         record = Production.query.get(record_id)
     elif model == 'flock':
         record = Flock.query.get(record_id)
-    elif model == 'health':
+    elif model == 'health_record':
         record = HealthRecord.query.get(record_id)
     else:
         flash("Invalid model.", 'danger')

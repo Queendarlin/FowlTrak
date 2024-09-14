@@ -92,7 +92,3 @@ class UpdateProfileForm(FlaskForm):
             email_address = User.query.filter_by(email=email_address_to_check.data).first()
             if email_address:
                 raise ValidationError('Email Address already exists! Please try a different email address')
-
-
-class DeleteRecordForm(FlaskForm):
-    submit = SubmitField('Delete Record')

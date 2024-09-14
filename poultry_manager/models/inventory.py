@@ -18,7 +18,7 @@ class Inventory(BaseModel):
     purchase_date = db.Column(db.DateTime(), nullable=False, default=ntplib_time)
 
     # Foreign Key
-    worker_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     # Relationship
     user = db.relationship('User', back_populates='inventories', lazy=True)

@@ -1,0 +1,214 @@
+<form id="editForm" method="POST" action="{{ url_for('main.edit_record', model=model, record_id=record.id) }}">
+    {{ form.hidden_tag() }}
+
+    <!-- Conditional rendering based on the model type -->
+    {% if model == 'inventory' %}
+        <!-- Inventory Form Fields -->
+        <div class="mb-3">
+            <label for="item_name" class="form-label">Item Name</label>
+            {{ form.item_name(class="form-control", id="item_name", placeholder="Enter item name") }}
+            {% if form.item_name.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.item_name.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            {{ form.category(class="form-select", id="category") }}
+            {% if form.category.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.category.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            {{ form.quantity(class="form-control", id="quantity", placeholder="Enter quantity") }}
+            {% if form.quantity.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.quantity.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="unit" class="form-label">Unit</label>
+            {{ form.unit(class="form-control", id="unit", placeholder="Enter unit (e.g., kg, liters, bags, pc)") }}
+            {% if form.unit.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.unit.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="cost" class="form-label">Cost</label>
+            {{ form.cost(class="form-control", id="cost", placeholder="Enter cost") }}
+            {% if form.cost.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.cost.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="currency" class="form-label">Currency</label>
+            {{ form.currency(class="form-select", id="currency") }}
+            {% if form.currency.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.currency.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="purchase_order_number" class="form-label">Purchase Order Number (Optional)</label>
+            {{ form.purchase_order_number(class="form-control", id="purchase_order_number", placeholder="Enter purchase order number") }}
+        </div>
+
+        <div class="mb-3">
+            <label for="purchase_date" class="form-label">Purchase Date</label>
+            {{ form.purchase_date(class="form-control", id="purchase_date") }}
+            {% if form.purchase_date.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.purchase_date.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+    {% elif model == 'flock' %}
+        <!-- Flock Form Fields -->
+        <div class="mb-3">
+            <label for="breed" class="form-label">Breed</label>
+            {{ form.breed(class="form-control", id="breed", placeholder="Enter breed") }}
+            {% if form.breed.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.breed.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            {{ form.quantity(class="form-control", id="quantity", placeholder="Enter quantity") }}
+            {% if form.quantity.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.quantity.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="age" class="form-label">Age (days)</label>
+            {{ form.age(class="form-control", id="age", placeholder="Enter age in days") }}
+            {% if form.age.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.age.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="deaths" class="form-label">Deaths</label>
+            {{ form.deaths(class="form-control", id="deaths", placeholder="Enter deaths") }}
+            {% if form.deaths.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.deaths.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="sold" class="form-label">Sold Quantity</label>
+            {{ form.sold(class="form-control", id="sold", placeholder="Enter sold quantity") }}
+            {% if form.sold.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.sold.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+    {% elif model == 'health_record' %}
+        <!-- Health Form Fields -->
+        <div class="mb-3">
+            <label for="number_sick" class="form-label">Number of Sick Birds</label>
+            {{ form.number_sick(class="form-control", id="number_sick", placeholder="Enter number of sick birds") }}
+            {% if form.number_sick.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.number_sick.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="symptom" class="form-label">Symptom(s)</label>
+            {{ form.symptom(class="form-control", id="symptom", placeholder="Enter symptom(s)") }}
+            {% if form.symptom.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.symptom.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="medication_given" class="form-label">Medication Given</label>
+            {{ form.medication_given(class="form-control", id="medication_given", placeholder="Enter medication given") }}
+            {% if form.medication_given.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.medication_given.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="date_reported" class="form-label">Date Reported</label>
+            {{ form.date_reported(class="form-control", id="date_reported") }}
+            {% if form.date_reported.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.date_reported.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+    {% elif model == 'production' %}
+        <!-- Production Form Fields -->
+        <div class="mb-3">
+            <label for="number_eggs_collected" class="form-label">Number of Eggs Collected</label>
+            {{ form.number_eggs_collected(class="form-control", id="number_eggs_collected") }}
+            {% if form.number_eggs_collected.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.number_eggs_collected.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="eggs_sold" class="form-label">Number of Eggs Sold</label>
+            {{ form.eggs_sold(class="form-control", id="eggs_sold") }}
+            {% if form.eggs_sold.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.eggs_sold.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="date_collected" class="form-label">Date Collected</label>
+            {{ form.date_collected(class="form-control", id="date_collected") }}
+            {% if form.date_collected.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.date_collected.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+    <!-- Submit Button -->
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-success rounded-pill">Save changes</button>
+    </div>
+</form>
