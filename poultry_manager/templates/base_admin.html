@@ -21,7 +21,7 @@
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show text-white bg-primary" role="alert">
+                    <div class="alert alert-{{ category }} alert-dismissible fade show bg-primary text-black" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -45,11 +45,11 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
+                        <a href="#" class="sidebar-link collapsed d-flex align-items-center" data-bs-target="#pages" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
                             View Records
                         </a>
-                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <ul id="pages" class="sidebar-dropdown-list collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
                                 <a href="{{ url_for('main.view_inventory') }}" class="sidebar-link">View Inventory</a>
                             </li>
@@ -69,7 +69,7 @@
                             aria-expanded="false"><i class="fa-solid fa-sliders pe-2"></i>
                             Reports
                         </a>
-                        <ul id="reports" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <ul id="reports" class="sidebar-dropdown-list collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
                                 <a href="#" class="sidebar-link">Weekly Reports</a>
                             </li>
@@ -83,9 +83,9 @@
                             aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
                             Manage Workers
                         </a>
-                        <ul id="workers" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <ul id="workers" class="sidebar-dropdown-list collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">View Workers</a>
+                                <a href="{{ url_for('main.manage_workers') }}" class="sidebar-link">View Workers</a>
                             </li>
                         </ul>
                     </li>

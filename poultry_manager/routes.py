@@ -203,53 +203,57 @@ def admin_dashboard():
     )
 
 
+@bp.route('/manage_workers', methods=['GET'])
+@admin_required
+@login_required
+def manage_workers():
+    workers = User.query.all()  # Fetch all workers
+    return render_template('manage_workers.html', workers=workers)
+
+
 @bp.route('/promote/<int:user_id>')
 @login_required
 @admin_required
-def promote_user(user_id):
+def promote_worker(user_id):
     """Admin promotes a worker to admin"""
-    user = User.query.get(user_id)
-    if user and user.is_worker():
-        user.role = RoleEnum.ADMIN
-        db.session.commit()
-        flash(f'{user.username} has been promoted to admin.', category='success')
-    else:
-        flash('User not found or already an admin.', category='danger')
-    return redirect(url_for('admin_dashboard'))
+    worker = User.query.get_or_404(user_id)
+    if worker.is_admin():
+        flash("User is already an admin.", "warning")
+        return redirect(url_for('main.manage_workers'))
+
+    worker.role = RoleEnum.ADMIN
+    db.session.commit()
+    flash(f"{worker.username} has been promoted to admin.", "success")
+    return redirect(url_for('main.manage_workers'))
 
 
 @bp.route('/demote/<int:user_id>')
 @login_required
 @admin_required
-def demote_user(user_id):
-    """Admin demotes an admin back to worker"""
-    user = User.query.get(user_id)
-    if user and user.is_admin():
-        user.role = RoleEnum.WORKER
-        db.session.commit()
-        flash(f'{user.username} has been demoted to worker.', category='success')
-    else:
-        flash('User not found or already a worker.', category='danger')
-    return redirect(url_for('admin_dashboard'))
+def demote_worker(user_id):
+    worker = User.query.get_or_404(user_id)
+    if worker.is_worker():
+        flash("User is already a worker.", "warning")
+        return redirect(url_for('main.manage_workers'))
+
+    worker.role = RoleEnum.WORKER
+    db.session.commit()
+    flash(f"{worker.username} has been demoted to worker.", "success")
+    return redirect(url_for('main.manage_workers'))
 
 
 @bp.route('/remove-worker/<int:user_id>', methods=['POST'])
 @login_required
 @admin_required
-def remove_worker(user_id):
+def delete_worker(user_id):
     """
     Admin removes (deletes) a worker from the system.
     """
-    worker = User.query.get(user_id)
-
-    if worker and worker.is_worker():
-        db.session.delete(worker)
-        db.session.commit()
-        flash(f'Worker {worker.username} has been removed from the system.', category='success')
-    else:
-        flash('Worker not found or cannot be removed.', category='danger')
-
-    return redirect(url_for('main.admin_dashboard'))
+    worker = User.query.get_or_404(user_id)
+    db.session.delete(worker)
+    db.session.commit()
+    flash(f"{worker.username} has been removed.", "success")
+    return redirect(url_for('main.manage_workers'))
 
 
 @bp.route('/edit-record/<model>/<int:record_id>', methods=['GET', 'POST'])
