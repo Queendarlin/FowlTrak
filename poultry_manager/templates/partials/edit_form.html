@@ -1,0 +1,8 @@
+<form method="POST" action="{{ url_for('main.edit_record', model=model, record_id=record.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.field_name.label(class="form-label") }}
+        {{ form.field_name(class="form-control") }}
+    </div>
+    <!-- Add additional fields as needed -->
+</form>

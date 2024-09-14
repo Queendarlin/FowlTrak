@@ -1,0 +1,44 @@
+{% extends "base_admin.html" %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Health Records</h1>
+    <!-- Add table-responsive class for responsiveness -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Number of Birds Sick</th>
+                    <th scope="col">Symptoms</th>
+                    <th scope="col">Medication Given</th>
+                    <th scope="col">Date Reported</th>
+                    <th scope="col">Entered By</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in health_records %}
+                <tr>
+                    <td>{{ item.number_sick }}</td>
+                    <td>{{ item.symptom }}</td>
+                    <td>{{ item.medication_given }}</td>
+                    <td>{{ item.date_reported.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ item.user.username }}</td>
+                    <td>
+                        <a href="{{ url_for('main.edit_record', model='health_record', record_id=item.id) }}"
+                           class="btn btn-sm btn-primary d-inline-block m-2"
+                           aria-label="Edit record for health report on {{ item.date_reported.strftime('%Y-%m-%d') }}">
+                           Edit
+                        </a>
+                        <a href="{{ url_for('main.delete_record', model='health_record', record_id=item.id) }}"
+                           class="btn btn-sm btn-danger d-inline-block m-2"
+                           aria-label="Delete record for health report on {{ item.date_reported.strftime('%Y-%m-%d') }}">
+                           Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

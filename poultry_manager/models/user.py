@@ -36,6 +36,11 @@ class User(BaseModel, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(db.Enum(RoleEnum), nullable=False, default=RoleEnum.WORKER, index=True)
 
+    inventories = db.relationship('Inventory', back_populates='user', lazy=True, cascade="all, delete-orphan")
+    productions = db.relationship('Production', back_populates='user', lazy=True, cascade="all, delete-orphan")
+    health_records = db.relationship('HealthRecord', back_populates='user', lazy=True, cascade="all, delete-orphan")
+    flocks = db.relationship('Flock', back_populates='user', lazy=True, cascade="all, delete-orphan")
+
     def __init__(self, username, email, password):
         self.username = username
         self.email = email

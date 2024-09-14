@@ -21,7 +21,7 @@
         }
 
         .navbar {
-            z-index: 9999;
+            z-index: 1;
         }
 
         .flash-message {
@@ -30,9 +30,8 @@
             top: 70px;
             left: 0;
             right: 0;
-            z-index: 1050;
-            margin: 0 auto;
-            max-width: 800px;
+            z-index: 1;
+            max-width: 60%;
         }
 
         .footer {
@@ -73,8 +72,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
+                    <a class="nav-link" href="{{ url_for('main.worker_dashboard') }}">Dashboard</a>
                     <ul class="navbar-nav ms-auto">
-                        <a class="nav-link" href="{{ url_for('main.worker_dashboard') }}">Dashboard</a>
                         <li class="nav-item"><a class="nav-link text-warning">Welcome, {{ current_user.username }}</a></li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('main.logout_page') }}" id="logout-link">Logout</a>

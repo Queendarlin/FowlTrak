@@ -1,4 +1,4 @@
-from flask import render_template, url_for, Blueprint, redirect, flash
+from flask import render_template, url_for, Blueprint, redirect, flash, jsonify, request
 from flask_login import logout_user, login_user, login_required, current_user
 from poultry_manager.forms import RegisterForm, LoginForm, InventoryForm, ProductionForm, FlockForm, HealthRecordForm
 from poultry_manager import db
@@ -8,6 +8,7 @@ from poultry_manager.models.inventory import Inventory
 from poultry_manager.models.production import Production
 from poultry_manager.models.flock import Flock
 from poultry_manager.models.health_record import HealthRecord
+from datetime import datetime, timedelta
 
 
 bp = Blueprint('main', __name__)
@@ -57,7 +58,12 @@ def login_page():
         if attempted_user and attempted_user.check_password(form.password.data):
             login_user(attempted_user)
             flash(f'Successfully logged in as: {attempted_user.username}', category='success')
-            return redirect(url_for('main.worker_dashboard'))
+
+            # Check if the user is an admin or a worker
+            if attempted_user.is_admin():
+                return redirect(url_for('main.admin_dashboard'))  # Redirect to admin dashboard
+            elif attempted_user.is_worker():
+                return redirect(url_for('main.worker_dashboard'))  # Redirect to worker dashboard
         else:
             flash('Login failed. Check your email and password.', category='danger')
 
@@ -73,47 +79,6 @@ def logout_page():
     logout_user()
     flash('You have successfully logged out', category='info')
     return redirect(url_for('main.home_page'))
-
-
-@bp.route('/admin-dashboard')
-@login_required
-@admin_required
-def admin_dashboard():
-    """Admin-only dashboard showing farm data and worker management"""
-    return render_template('admin_dashboard.html')
-    # Fetch inventories
-    # inventory_items = Inventory.query.all()
-    #     return render_template('inventory.html', form=form, inventory_items=inventory_items)
-
-
-@bp.route('/promote/<int:user_id>')
-@login_required
-@admin_required
-def promote_user(user_id):
-    """Admin promotes a worker to admin"""
-    user = User.query.get(user_id)
-    if user and user.is_worker():
-        user.role = RoleEnum.ADMIN
-        db.session.commit()
-        flash(f'{user.username} has been promoted to admin.', category='success')
-    else:
-        flash('User not found or already an admin.', category='danger')
-    return redirect(url_for('admin_dashboard'))
-
-
-@bp.route('/demote/<int:user_id>')
-@login_required
-@admin_required
-def demote_user(user_id):
-    """Admin demotes an admin back to worker"""
-    user = User.query.get(user_id)
-    if user and user.is_admin():
-        user.role = RoleEnum.WORKER
-        db.session.commit()
-        flash(f'{user.username} has been demoted to worker.', category='success')
-    else:
-        flash('User not found or already a worker.', category='danger')
-    return redirect(url_for('admin_dashboard'))
 
 
 @bp.route('/workers-dashboard')
@@ -208,3 +173,223 @@ def add_health_record():
         return redirect(url_for('main.worker_dashboard'))
 
     return render_template('health.html', form=form)
+
+
+@bp.route('/admin-dashboard')
+@login_required
+@admin_required
+def admin_dashboard():
+    """
+        Admin-only dashboard. View all records and perform management tasks.
+    """
+    # Fetch all data from the database
+    workers = User.query.filter_by(role=RoleEnum.WORKER).all()
+    inventories = Inventory.query.all()
+    productions = Production.query.all()
+    flocks = Flock.query.all()
+    health_records = HealthRecord.query.all()
+
+    return render_template(
+        'admin_dashboard.html',
+        workers=workers,
+        inventories=inventories,
+        productions=productions,
+        flocks=flocks,
+        health_records=health_records
+    )
+
+
+@bp.route('/promote/<int:user_id>')
+@login_required
+@admin_required
+def promote_user(user_id):
+    """Admin promotes a worker to admin"""
+    user = User.query.get(user_id)
+    if user and user.is_worker():
+        user.role = RoleEnum.ADMIN
+        db.session.commit()
+        flash(f'{user.username} has been promoted to admin.', category='success')
+    else:
+        flash('User not found or already an admin.', category='danger')
+    return redirect(url_for('admin_dashboard'))
+
+
+@bp.route('/demote/<int:user_id>')
+@login_required
+@admin_required
+def demote_user(user_id):
+    """Admin demotes an admin back to worker"""
+    user = User.query.get(user_id)
+    if user and user.is_admin():
+        user.role = RoleEnum.WORKER
+        db.session.commit()
+        flash(f'{user.username} has been demoted to worker.', category='success')
+    else:
+        flash('User not found or already a worker.', category='danger')
+    return redirect(url_for('admin_dashboard'))
+
+
+@bp.route('/remove-worker/<int:user_id>', methods=['POST'])
+@login_required
+@admin_required
+def remove_worker(user_id):
+    """
+    Admin removes (deletes) a worker from the system.
+    """
+    worker = User.query.get(user_id)
+
+    if worker and worker.is_worker():
+        db.session.delete(worker)
+        db.session.commit()
+        flash(f'Worker {worker.username} has been removed from the system.', category='success')
+    else:
+        flash('Worker not found or cannot be removed.', category='danger')
+
+    return redirect(url_for('main.admin_dashboard'))
+
+
+@bp.route('/edit-record/<model>/<int:record_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_record(model, record_id):
+    """
+    Admin edits a specific record based on the model.
+    """
+    if model == 'inventory':
+        record = Inventory.query.get_or_404(record_id)
+        form = InventoryForm(obj=record)
+    elif model == 'production':
+        record = Production.query.get_or_404(record_id)
+        form = ProductionForm(obj=record)
+    elif model == 'flock':
+        record = Flock.query.get_or_404(record_id)
+        form = FlockForm(obj=record)
+    elif model == 'health':
+        record = HealthRecord.query.get_or_404(record_id)
+        form = HealthRecordForm(obj=record)
+    else:
+        return jsonify({'success': False, 'message': 'Invalid model.'}), 400
+
+    # Handle form submission
+    if form.validate_on_submit():
+        form.populate_obj(record)
+        db.session.commit()
+        return jsonify({'success': True, 'message': f'{model.capitalize()} record updated.'})
+
+    # For GET requests, return the form HTML to load into the modal
+    if request.method == 'GET':
+        return render_template('partials/edit_form.html', form=form, model=model)
+
+
+@bp.route('/delete-record/<model>/<int:record_id>')
+@login_required
+@admin_required
+def delete_record(model, record_id):
+    """
+    Admin deletes a specific record based on the model.
+    """
+    if model == 'inventory':
+        record = Inventory.query.get(record_id)
+    elif model == 'production':
+        record = Production.query.get(record_id)
+    elif model == 'flock':
+        record = Flock.query.get(record_id)
+    elif model == 'health':
+        record = HealthRecord.query.get(record_id)
+    else:
+        flash("Invalid model.", 'danger')
+        return redirect(url_for('main.admin_dashboard'))
+
+    if record:
+        db.session.delete(record)
+        db.session.commit()
+        flash(f'{model} record has been deleted.', 'success')
+    else:
+        flash('Record not found.', 'danger')
+
+    return redirect(url_for('main.admin_dashboard'))
+
+
+@bp.route('/generate-report/<string:period>')
+@login_required
+@admin_required
+def generate_report(period):
+    """
+    Generate weekly or monthly reports.
+    """
+    today = datetime.today()
+    if period == 'weekly':
+        start_date = today - timedelta(weeks=1)
+    elif period == 'monthly':
+        start_date = today - timedelta(weeks=4)
+    else:
+        flash("Invalid report period", 'danger')
+        return redirect(url_for('main.admin_dashboard'))
+
+    # Filter data by date range
+    inventories = Inventory.query.filter(Inventory.purchase_date >= start_date).all()
+    productions = Production.query.filter(Production.date_collected >= start_date).all()
+    flocks = Flock.query.filter(Flock.arrival_date >= start_date).all()
+    health_records = HealthRecord.query.filter(HealthRecord.date_reported >= start_date).all()
+
+    # Summarize flock data
+    flock_summary = {
+        'total_birds': sum([flock.quantity for flock in flocks]),
+        'breeds': {flock.breed: sum([f.quantity for f in flocks if f.breed == flock.breed]) for flock in flocks},
+        'birds_sold': sum([flock.sold for flock in flocks]),
+        'birds_died': sum([flock.died for flock in flocks])
+    }
+
+    return render_template(
+        'report.html',
+        period=period,
+        inventories=inventories,
+        productions=productions,
+        flock_summary=flock_summary,
+        health_records=health_records
+    )
+
+
+@bp.route('/view-inventory')
+@login_required
+@admin_required
+def view_inventory():
+    """
+    View all inventory records with the worker who entered each record.
+    """
+    inventories = Inventory.query.all()
+    return render_template('view_inventory.html', inventories=inventories)
+
+
+@bp.route('/view-flock')
+@login_required
+@admin_required
+def view_flock():
+    """
+    View all inventory records with the worker who entered each record.
+    """
+    flocks = db.session.query(Flock, User).join(User).all()
+    return render_template('view_flock.html', flocks=flocks)
+
+
+@bp.route('/view-production')
+@login_required
+@admin_required
+def view_production():
+    """
+    View all inventory records with the worker who entered each record.
+    """
+    # Query all production records along with the associated worker who added them
+    productions = db.session.query(Production, User).join(User).all()
+    return render_template('view_production.html', productions=productions)
+
+
+@bp.route('/view-health_record')
+@login_required
+@admin_required
+def view_health_record():
+    """
+    View all inventory records with the worker who entered each record.
+    """
+    health_records = HealthRecord.query.all()
+    return render_template('view_health_records.html', health_records=health_records)
