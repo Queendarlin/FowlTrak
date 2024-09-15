@@ -1,5 +1,4 @@
 import os
-from flask import Flask
 from poultry_manager import create_app, db
 from poultry_manager.models.user import User, RoleEnum
 from dotenv import load_dotenv

@@ -62,6 +62,7 @@ class FlockForm(FlaskForm):
     age = IntegerField('Age (Days)', validators=[DataRequired(), NumberRange(min=0)])
     deaths = IntegerField('Number of Deaths', default=0, validators=[NumberRange(min=0)])
     sold = IntegerField('Number of Chickens Sold', default=0, validators=[NumberRange(min=0)])
+    entry_date = DateField('Date Entered', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Submit Record')
 
 

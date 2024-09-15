@@ -12,6 +12,7 @@
                     <th scope="col">Age(Days)</th>
                     <th scope="col">Deaths</th>
                     <th scope="col">Sold</th>
+                    <th scope="col">Entry Date</th>
                     <th scope="col">Entered By</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -24,6 +25,7 @@
                     <td>{{ flock.age }}</td>
                     <td>{{ flock.deaths }}</td>
                     <td>{{ flock.sold }}</td>
+                    <td>{{ flock.entry_date }}</td>
                     <td>{{ flock.user.username }}</td>
                     <td>
                         <a href="{{ url_for('main.edit_record', model='flock', record_id=flock.id) }}"

@@ -8,7 +8,6 @@ from poultry_manager.models.inventory import Inventory
 from poultry_manager.models.production import Production
 from poultry_manager.models.flock import Flock
 from poultry_manager.models.health_record import HealthRecord
-from datetime import datetime, timedelta
 
 
 bp = Blueprint('main', __name__)
@@ -148,6 +147,7 @@ def add_flock():
             age=form.age.data,
             deaths=form.deaths.data,
             sold=form.sold.data,
+            entry_date=form.entry_date.data,
             user_id=current_user.id
         )
         db.session.add(new_flock)
@@ -339,46 +339,6 @@ def delete_record(model, record_id):
         flash('Record not found.', 'danger')
 
     return redirect(url_for('main.admin_dashboard'))
-
-
-@bp.route('/generate-report/<string:period>')
-@login_required
-@admin_required
-def generate_report(period):
-    """
-    Generate weekly or monthly reports.
-    """
-    today = datetime.today()
-    if period == 'weekly':
-        start_date = today - timedelta(weeks=1)
-    elif period == 'monthly':
-        start_date = today - timedelta(weeks=4)
-    else:
-        flash("Invalid report period", 'danger')
-        return redirect(url_for('main.admin_dashboard'))
-
-    # Filter data by date range
-    inventories = Inventory.query.filter(Inventory.purchase_date >= start_date).all()
-    productions = Production.query.filter(Production.date_collected >= start_date).all()
-    flocks = Flock.query.filter(Flock.arrival_date >= start_date).all()
-    health_records = HealthRecord.query.filter(HealthRecord.date_reported >= start_date).all()
-
-    # Summarize flock data
-    flock_summary = {
-        'total_birds': sum([flock.quantity for flock in flocks]),
-        'breeds': {flock.breed: sum([f.quantity for f in flocks if f.breed == flock.breed]) for flock in flocks},
-        'birds_sold': sum([flock.sold for flock in flocks]),
-        'birds_died': sum([flock.died for flock in flocks])
-    }
-
-    return render_template(
-        'report.html',
-        period=period,
-        inventories=inventories,
-        productions=productions,
-        flock_summary=flock_summary,
-        health_records=health_records
-    )
 
 
 @bp.route('/view-inventory')
