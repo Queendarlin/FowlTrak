@@ -40,13 +40,13 @@
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
                         <a href="{{ url_for('main.admin_dashboard') }}" class="sidebar-link">
-                            <i class="fa-solid fa-list pe-2"></i>
+                            <i class="lead bi bi-speedometer2 text-success pe-1"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed d-flex align-items-center" data-bs-target="#pages" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
+                            aria-expanded="false"><i class="lead fa-solid fa-file-lines pe-2 text-success"></i>
                             View Records
                         </a>
                         <ul id="pages" class="sidebar-dropdown-list collapse" data-bs-parent="#sidebar">
@@ -65,8 +65,28 @@
                         </ul>
                     </li>
                     <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#reports" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="lead bi bi-plus-circle pe-2 text-success"></i>
+                            Add Records
+                        </a>
+                        <ul id="reports" class="sidebar-dropdown-list collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('main.add_inventory') }}" class="sidebar-link">Add Inventory</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('main.add_flock') }}" class="sidebar-link">Add Flocks</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('main.add_production') }}" class="sidebar-link">Add Production</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{ url_for('main.add_health_record') }}" class="sidebar-link">Add Health Record</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#workers" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
+                            aria-expanded="false"><i class="lead fa-regular fa-user pe-2 text-success"></i>
                             Manage Workers
                         </a>
                         <ul id="workers" class="sidebar-dropdown-list collapse" data-bs-parent="#sidebar">
