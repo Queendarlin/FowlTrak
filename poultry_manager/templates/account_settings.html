@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.container.mt-5.mb-5 {
+    margin-top: 7rem !important;
+}
+</style>
+<div class="container mt-5 mb-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; padding-top: 56px;">
+        <div class="card-header bg-success text-white">
+            <h2>Account Settings</h2>
+        </div>
+        <div class="card-body">
+        <form method="POST" action="{{ url_for('main.account_settings') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class_="form-control", placeholder="Enter your username", aria_describedby="usernameHelp") }}
+                {% for error in form.username.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email_address.label(class="form-label") }}
+                {{ form.email_address(class_="form-control", placeholder="Enter your email", aria_describedby="emailHelp") }}
+                {% for error in form.email_address.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.current_password.label(class="form-label") }}
+                {{ form.current_password(class_="form-control", placeholder="Enter your current password", aria_describedby="currentPasswordHelp") }}
+                {% for error in form.current_password.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.new_password.label(class="form-label") }}
+                {{ form.new_password(class_="form-control", placeholder="Enter a new password (optional)", aria_describedby="newPasswordHelp") }}
+                {% for error in form.new_password.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.confirm_new_password.label(class="form-label") }}
+                {{ form.confirm_new_password(class_="form-control", placeholder="Confirm new password", aria_describedby="confirmPasswordHelp") }}
+                {% for error in form.confirm_new_password.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-end">
+                {{ form.submit(class_="btn btn-success rounded-pill") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

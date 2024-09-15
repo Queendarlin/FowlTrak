@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, FloatField, Integer
 from wtforms import SelectField, DateField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange, Optional
 from poultry_manager.models.user import User
+from flask_login import current_user
 
 
 class RegisterForm(FlaskForm):
@@ -27,6 +28,31 @@ class LoginForm(FlaskForm):
     username = StringField('Username:', validators=[DataRequired()])
     password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+
+class AccountSettingsForm(FlaskForm):
+    username = StringField('Username:', validators=[Length(min=4, max=30), DataRequired()])
+    email_address = StringField('Email Address:', validators=[Email(), DataRequired()])
+    current_password = PasswordField('Current Password:', validators=[DataRequired()])
+    new_password = PasswordField('New Password:', validators=[Length(min=7), Optional()])
+    confirm_new_password = PasswordField('Confirm New Password:', validators=[EqualTo('new_password'), Optional()])
+    submit = SubmitField('Update Account')
+
+    def validate_username(self, username_to_check):
+        if username_to_check.data != current_user.username:
+            user = User.query.filter_by(username=username_to_check.data).first()
+            if user:
+                raise ValidationError('Username already exists! Please try a different username.')
+
+    def validate_email_address(self, email_address_to_check):
+        if email_address_to_check.data != current_user.email:
+            email_address = User.query.filter_by(email=email_address_to_check.data).first()
+            if email_address:
+                raise ValidationError('Email Address already exists! Please try a different email address.')
+
+    def validate_current_password(self, current_password):
+        if not current_user.check_password(current_password.data):
+            raise ValidationError('Current password is incorrect.')
 
 
 class InventoryForm(FlaskForm):
@@ -73,23 +99,3 @@ class HealthRecordForm(FlaskForm):
     medication_given = StringField('Medication Given', validators=[Length(max=200), DataRequired()])
     date_reported = DateField('Date Reported', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Submit Record')
-
-
-class UpdateProfileForm(FlaskForm):
-    username = StringField('Username:', validators=[Length(min=4, max=30), Optional()])
-    email_address = StringField('Email Address:', validators=[Email(), Optional()])
-    password1 = PasswordField('New Password:', validators=[Length(min=7), Optional()])
-    password2 = PasswordField('Confirm New Password:', validators=[EqualTo('password1'), Optional()])
-    submit = SubmitField('Update Profile')
-
-    def validate_username(self, username_to_check):
-        if username_to_check.data:
-            user = User.query.filter_by(username=username_to_check.data).first()
-            if user:
-                raise ValidationError('Username already exists! Please try a different username')
-
-    def validate_email_address(self, email_address_to_check):
-        if email_address_to_check.data:
-            email_address = User.query.filter_by(email=email_address_to_check.data).first()
-            if email_address:
-                raise ValidationError('Email Address already exists! Please try a different email address')

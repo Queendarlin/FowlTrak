@@ -18,28 +18,34 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('main.home_page') }}" style="color: #719E31;">FowlTrak</a>
+                <a class="navbar-brand" href="{{ url_for('main.home_page') }}" style="color: #719E31;">FowlTrak</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto ms-5">
+                    {% if not current_user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link nav-link-spacing" href="{{ url_for('main.home_page') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-spacing" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-spacing" href="#features">Features</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-spacing" href="#benefits">Benefits</a></li>
+                    {% endif %}
                 </ul>
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link text-warning">Welcome, {{ current_user.username }}</a></li>
                     {% endif %}
+                    {% if not current_user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                             {% if current_user.is_authenticated %}
+                                <li><a class="dropdown-item" href="{{ url_for('main.account_settings') }}">Settings</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for('main.logout_page') }}" id="logout-link">Logout</a></li>
                             {% else %}
                                 <li><a class="dropdown-item" href="{{ url_for('main.register_page') }}">Register</a></li>

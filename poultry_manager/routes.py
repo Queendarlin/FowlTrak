@@ -1,9 +1,10 @@
 from flask import render_template, url_for, Blueprint, redirect, flash
 from flask_login import logout_user, login_user, login_required, current_user
-from poultry_manager.forms import RegisterForm, LoginForm, InventoryForm, ProductionForm, FlockForm, HealthRecordForm
+from poultry_manager.forms import (RegisterForm, LoginForm, InventoryForm, ProductionForm, FlockForm, HealthRecordForm,
+                                   AccountSettingsForm)
 from poultry_manager import db
 from poultry_manager.models.user import User, RoleEnum
-from poultry_manager.middleware.access_control import admin_required, worker_required
+from poultry_manager.middleware.access_control import admin_required, worker_required, admin_or_worker_required
 from poultry_manager.models.inventory import Inventory
 from poultry_manager.models.production import Production
 from poultry_manager.models.flock import Flock
@@ -17,10 +18,14 @@ bp = Blueprint('main', __name__)
 @bp.route('/home')
 def home_page():
     """
-        Render the home page. Redirect authenticated users to the tasks page.
-        """
+        Render the home page. Redirect authenticated users to their respective dashboards.
+    """
     if current_user.is_authenticated:
-        return redirect(url_for('main.worker_dashboard'))
+        if current_user.is_admin():
+            return redirect(url_for('main.admin_dashboard'))
+        elif current_user.is_worker():
+            return redirect(url_for('main.worker_dashboard'))
+
     return render_template('home.html')
 
 
@@ -64,7 +69,7 @@ def login_page():
             elif attempted_user.is_worker():
                 return redirect(url_for('main.worker_dashboard'))  # Redirect to worker dashboard
         else:
-            flash('Login failed. Check your email and password.', category='danger')
+            flash('Login failed. Check your username and password.', category='danger')
 
     return render_template('login.html', form=form)
 
@@ -80,6 +85,28 @@ def logout_page():
     return redirect(url_for('main.home_page'))
 
 
+@bp.route('/account-settings', methods=['GET', 'POST'])
+@login_required
+def account_settings():
+    form = AccountSettingsForm()
+
+    if form.validate_on_submit():
+        if form.new_password.data:
+            current_user.set_password(form.new_password.data)
+
+        current_user.username = form.username.data
+        current_user.email = form.email_address.data
+        db.session.commit()
+        flash('Your account has been updated!', category='success')
+        return redirect(url_for('main.account_settings'))
+
+    # Pre-fill the form with the user's current data
+    form.username.data = current_user.username
+    form.email_address.data = current_user.email
+
+    return render_template('account_settings.html', form=form)
+
+
 @bp.route('/workers-dashboard')
 @login_required
 @worker_required
@@ -91,8 +118,8 @@ def worker_dashboard():
 
 
 @bp.route('/add_inventory', methods=['GET', 'POST'])
-@worker_required
 @login_required
+@admin_or_worker_required
 def add_inventory():
     form = InventoryForm()
     if form.validate_on_submit():
@@ -109,18 +136,19 @@ def add_inventory():
         db.session.add(new_inventory)
         db.session.commit()
         flash('Inventory item added successfully', 'success')
+        # Redirect based on user role
+        if current_user.is_admin():
+            return redirect(url_for('main.admin_dashboard'))
         return redirect(url_for('main.worker_dashboard'))
     return render_template('inventory.html', form=form)
 
 
 @bp.route('/add-production', methods=['GET', 'POST'])
 @login_required
-@worker_required
+@admin_or_worker_required
 def add_production():
-    """Route to add production records."""
     form = ProductionForm()
     if form.validate_on_submit():
-        # Create new production record
         production_record = Production(
             number_eggs_collected=form.number_eggs_collected.data,
             eggs_sold=form.eggs_sold.data,
@@ -130,17 +158,19 @@ def add_production():
         db.session.add(production_record)
         db.session.commit()
         flash('Production record added successfully', 'success')
+        # Redirect based on user role
+        if current_user.is_admin():
+            return redirect(url_for('main.admin_dashboard'))
         return redirect(url_for('main.worker_dashboard'))
     return render_template('production.html', form=form)
 
 
 @bp.route('/add-flock', methods=['GET', 'POST'])
 @login_required
-@worker_required
+@admin_or_worker_required
 def add_flock():
     form = FlockForm()
     if form.validate_on_submit():
-        # Create a new flock record
         new_flock = Flock(
             breed=form.breed.data,
             quantity=form.quantity.data,
@@ -153,14 +183,16 @@ def add_flock():
         db.session.add(new_flock)
         db.session.commit()
         flash('Flock record added successfully', 'success')
+        # Redirect based on user role
+        if current_user.is_admin():
+            return redirect(url_for('main.admin_dashboard'))
         return redirect(url_for('main.worker_dashboard'))
-
     return render_template('flock.html', form=form)
 
 
 @bp.route('/add-health-record', methods=['GET', 'POST'])
 @login_required
-@worker_required
+@admin_or_worker_required
 def add_health_record():
     form = HealthRecordForm()
     if form.validate_on_submit():
@@ -174,8 +206,10 @@ def add_health_record():
         db.session.add(health_record)
         db.session.commit()
         flash('Health record added successfully', 'success')
+        # Redirect based on user role
+        if current_user.is_admin():
+            return redirect(url_for('main.admin_dashboard'))
         return redirect(url_for('main.worker_dashboard'))
-
     return render_template('health.html', form=form)
 
 
