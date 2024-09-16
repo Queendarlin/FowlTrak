@@ -1,4 +1,4 @@
-from flask import render_template, url_for, Blueprint, redirect, flash
+from flask import render_template, url_for, Blueprint, redirect, flash, jsonify
 from flask_login import logout_user, login_user, login_required, current_user
 from poultry_manager.forms import (RegisterForm, LoginForm, InventoryForm, ProductionForm, FlockForm, HealthRecordForm,
                                    AccountSettingsForm)
@@ -418,3 +418,49 @@ def view_health_record():
     """
     health_records = HealthRecord.query.all()
     return render_template('view_health_records.html', health_records=health_records)
+
+
+@bp.route('/api/production-data')
+@login_required
+@admin_required
+def production_data():
+    productions = Production.query.all()
+    data = {
+        "labels": [p.date_collected.strftime("%Y-%m-%d") for p in productions],
+        "data": [p.number_eggs_collected for p in productions]
+    }
+    return jsonify(data)
+
+
+@bp.route('/api/health-record-data')
+@login_required
+@admin_required
+def health_record_data():
+    records = HealthRecord.query.all()
+    symptoms = {}
+    for record in records:
+        symptom = record.symptom
+        symptoms[symptom] = symptoms.get(symptom, 0) + 1
+
+    data = {
+        "labels": list(symptoms.keys()),
+        "data": list(symptoms.values())
+    }
+    return jsonify(data)
+
+
+@bp.route('/api/flock-data')
+@login_required
+@admin_required
+def flock_data():
+    flocks = Flock.query.all()
+    breeds = {}
+    for flock in flocks:
+        breed = flock.breed
+        breeds[breed] = breeds.get(breed, 0) + flock.quantity
+
+    data = {
+        "labels": list(breeds.keys()),
+        "data": list(breeds.values())
+    }
+    return jsonify(data)

@@ -7,21 +7,47 @@
     <div class="mb-4 text-warning">
         <h2>Admin Dashboard</h2>
     </div>
-    <div class="row">
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card border-0">
-                <div class="card-body p-4">
-                    <div class="row g-0 w-100">
-                        <div class="">
-                            <div class="p-3 m-1">
-                                <h3>Welcome Back,
-                                    <span class="text-warning fs-1 lead">{{ current_user.username }}</span></h3>
-                            </div>
-                        </div>
-                        <div class="col-6 align-self-end text-end">
-
-                        </div>
+    <div class="row g-4">
+        <!-- Welcome Message Column -->
+        <div class="col-12 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card border-0 w-100 h-100">
+                <div class="card-body p-4 d-flex align-items-center justify-content-center">
+                    <div class="text-center">
+                        <!-- Large User Icon -->
+                        <i class="fas fa-user-circle text-warning" style="font-size: 8rem;"></i>
+                        <h3 class="mt-3">Welcome Back,</h3>
+                        <h3 class="text-warning fs-1">{{ current_user.username }}</h3>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Chart Column -->
+        <div class="col-12 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card border-0 w-100 h-100">
+                <div class="card-body p-4">
+                    <h4 class="card-title">Egg Collection</h4>
+                    <canvas id="eggCollectionChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptoms Overview Column -->
+        <div class="col-12 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card border-0 w-100 h-100">
+                <div class="card-body p-4">
+                    <h4 class="card-title">Symptoms Overview</h4>
+                    <canvas id="symptomsChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flock Distribution Column -->
+        <div class="col-12 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card border-0 w-100 h-100">
+                <div class="card-body p-4">
+                    <h4 class="card-title">Flock Distribution</h4>
+                    <canvas id="flockChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>

@@ -3,36 +3,43 @@
 <style>
     /* Custom Styles for Dashboard */
     body {
+        font-family: 'Poppins', sans-serif;
         display: flex;
         min-height: 100vh;
         flex-direction: column;
-        background-color: purple;
+        background-color: #186B2E;
+        overflow-x: hidden;
+        height: 100%;
     }
+
     .wrapper {
         display: flex;
-        flex: 1;
+        height: 100%;
     }
 
     /* Sidebar Styles */
     .sidebar {
         width: 250px;
         background-color: #343a40;
-        min-height: 100vh;
+        height: 100vh;
         position: fixed;
         top: 0;
         left: 0;
         padding-top: 60px;
     }
+
     .sidebar .nav-link {
         color: #adb5bd;
         padding: 15px 20px;
         display: block;
         transition: background 0.3s, color 0.3s;
     }
+
     .sidebar .nav-link:hover {
         background-color: #495057;
         color: #fff;
     }
+
     .sidebar .active {
         background-color: #007bff;
         color: #fff;
@@ -40,27 +47,51 @@
 
     /* Content Styles */
     .content {
-        margin-left: 150px;
-        width: 100%;
+        margin-left: 200px;
+        width: calc(100% - 260px);
+        padding: 20px;
+        flex-grow: 1;
+        overflow: auto;
     }
+
+    /* Card Styles */
     .card-custom {
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s;
+        height: 100%;
     }
+
     .card-custom:hover {
         transform: scale(1.05);
     }
 
-    /* Footer */
-    footer {
-        position: relative;
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+        .sidebar {
+            display: none;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card-custom .card-body {
+            padding: 10px;
+        }
+
+        .sidebar .nav-link {
+            padding: 10px 15px;
+        }
     }
 </style>
 
 <div class="wrapper">
     <!-- Sidebar -->
-    <nav class="sidebar">
+    <nav class="sidebar d-none d-lg-block">
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link active" href="{{ url_for('main.worker_dashboard') }}">
@@ -104,7 +135,7 @@
         <!-- Cards Section -->
         <div class="row">
             <!-- Production Card -->
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div class="card card-custom text-white bg-primary">
                     <div class="card-body">
                         <h5 class="card-title text-center"><i class="fa-solid fa-egg"></i> Production</h5>
@@ -115,7 +146,7 @@
             </div>
 
             <!-- Health Monitoring Card -->
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div class="card card-custom text-white bg-danger">
                     <div class="card-body">
                         <h5 class="card-title text-center"><i class="fa-solid fa-heartbeat"></i> Health Monitoring</h5>
@@ -126,8 +157,8 @@
             </div>
 
             <!-- Inventory Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card card-custom text-white bg-success">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card card-custom text-white bg-secondary">
                     <div class="card-body">
                         <h5 class="card-title text-center"><i class="fa-solid fa-boxes"></i> Inventory</h5>
                         <p class="card-text text-center">Manage farm inventory.</p>
@@ -137,7 +168,7 @@
             </div>
 
             <!-- Flock Records Card -->
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div class="card card-custom text-white bg-warning">
                     <div class="card-body">
                         <h5 class="card-title text-center"><i class="fa-solid fa-seedling"></i> Flock Records</h5>
