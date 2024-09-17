@@ -12,5 +12,6 @@ class Config:
     if not SECRET_KEY:
         raise RuntimeError("SECRET_KEY environment variable not set")
 
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://user:password@localhost/fowl-track')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FLASK_ENV = os.getenv('FLASK_ENV', 'production')
