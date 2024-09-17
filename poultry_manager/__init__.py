@@ -24,7 +24,7 @@ def create_app():
 
     # Flask-Login initialization
     login_manager.init_app(app)
-    login_manager.login_view = 'login'  # Redirect to 'login' when login is required
+    login_manager.login_view = 'main.login_page'  # Redirect to 'login' when login is required
     login_manager.login_message_category = 'info'
 
     # import routes and models

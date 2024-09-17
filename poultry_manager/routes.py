@@ -131,7 +131,8 @@ def add_inventory():
             cost=form.cost.data,
             currency=form.currency.data,
             purchase_order_number=form.purchase_order_number.data,
-            user_id=current_user.id
+            user_id=current_user.id,
+            created_by_username=current_user.username
         )
         db.session.add(new_inventory)
         db.session.commit()
@@ -153,7 +154,8 @@ def add_production():
             number_eggs_collected=form.number_eggs_collected.data,
             eggs_sold=form.eggs_sold.data,
             date_collected=form.date_collected.data,
-            user_id=current_user.id
+            user_id=current_user.id,
+            created_by_username=current_user.username
         )
         db.session.add(production_record)
         db.session.commit()
@@ -178,7 +180,8 @@ def add_flock():
             deaths=form.deaths.data,
             sold=form.sold.data,
             entry_date=form.entry_date.data,
-            user_id=current_user.id
+            user_id=current_user.id,
+            created_by_username=current_user.username
         )
         db.session.add(new_flock)
         db.session.commit()
@@ -201,7 +204,8 @@ def add_health_record():
             symptom=form.symptom.data,
             medication_given=form.medication_given.data,
             date_reported=form.date_reported.data,
-            user_id=current_user.id
+            user_id=current_user.id,
+            created_by_username=current_user.username
         )
         db.session.add(health_record)
         db.session.commit()

@@ -21,7 +21,7 @@
                     <td>{{ production.number_eggs_collected }}</td>
                     <td>{{ production.eggs_sold }}</td>
                     <td>{{ production.date_collected.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ production.user.username }}</td>
+                    <td>{{ production.created_by_username }}</td>
                     <td>
                         <a href="{{ url_for('main.edit_record', model='production', record_id=production.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2"

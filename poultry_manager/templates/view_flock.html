@@ -26,7 +26,7 @@
                     <td>{{ flock.deaths }}</td>
                     <td>{{ flock.sold }}</td>
                     <td>{{ flock.entry_date }}</td>
-                    <td>{{ flock.user.username }}</td>
+                    <td>{{ flock.created_by_username }}</td>
                     <td>
                         <a href="{{ url_for('main.edit_record', model='flock', record_id=flock.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2" data-bs-toggle="modal" data-bs-target="#editModal"

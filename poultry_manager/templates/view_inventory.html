@@ -33,7 +33,7 @@
                         <td>{{ inventory.cost }}</td>
                         <td>{{ inventory.currency }}</td>
                         <td>{{ inventory.purchase_date.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ inventory.user.username }}</td>
+                        <td>{{ inventory.created_by_username }}</td>
                         <td>
                             <a href="{{ url_for('main.edit_record', model='inventory', record_id=inventory.id) }}"
                                class="btn btn-primary btn-sm d-inline-block m-2"

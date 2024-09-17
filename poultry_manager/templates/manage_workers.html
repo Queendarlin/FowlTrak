@@ -6,7 +6,7 @@
 <div class="container">
     <h2 class="mb-4">Manage Workers</h2>
 
-    <!-- Responsive Table -->
+    <!-- Table To Manage Workers -->
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
@@ -27,17 +27,19 @@
                         <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
                             {% if worker.is_worker() %}
                             <a href="{{ url_for('main.promote_worker', user_id=worker.id) }}"
-                               class="btn btn-success btn-sm"
+                               class="btn btn-success btn-sm promote-button"
+                               data-promote-url="{{ url_for('main.promote_worker', user_id=worker.id) }}"
                                aria-label="Promote {{ worker.username }} to Admin">Promote to Admin</a>
                             {% elif worker.is_admin() %}
                             <a href="{{ url_for('main.demote_worker', user_id=worker.id) }}"
-                               class="btn btn-warning btn-sm"
+                               class="btn btn-warning btn-sm demote-button"
+                               data-demote-url="{{ url_for('main.demote_worker', user_id=worker.id) }}"
                                aria-label="Demote {{ worker.username }} to Worker">Demote to Worker</a>
                             {% endif %}
                             <a href="{{ url_for('main.delete_worker', user_id=worker.id) }}"
-                               class="btn btn-danger btn-sm"
-                               aria-label="Delete {{ worker.username }}"
-                               onclick="return confirm('Are you sure you want to delete this worker?');">
+                               class="btn btn-danger btn-sm delete-button"
+                               data-delete-url="{{ url_for('main.delete_worker', user_id=worker.id) }}" data-method="POST"
+                               aria-label="Delete {{ worker.username }}">
                                 Delete
                             </a>
                         </div>

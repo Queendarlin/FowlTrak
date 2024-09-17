@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
-
 body {
     font-family: 'Poppins', sans-serif;
     opacity: 1;
@@ -41,7 +38,7 @@ li {
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     width: 100%;
-    background: var(--bs-dark-bg-subtle);
+    background-color: #186B2E;
 }
 
 /* Sidebar Elements Style */
@@ -115,26 +112,6 @@ li {
     footer {
         width: 100vw;
     }
-}
-
-/* Theme Toggler */
-.theme-toggle {
-    transform: translateY(-65%);
-    text-align: center;
-    z-index: 1;
-}
-
-html[data-bs-theme="dark"] .theme-toggle .bi-sun,
-html[data-bs-theme="light"] .theme-toggle .bi-moon {
-    cursor: pointer;
-}
-
-html[data-bs-theme="dark"] .theme-toggle .bi-moon {
-    display: none;
-}
-
-html[data-bs-theme="light"] .theme-toggle .bi-sun {
-    display: none;
 }
 
 .flash-message {

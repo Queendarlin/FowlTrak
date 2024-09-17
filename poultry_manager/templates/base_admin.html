@@ -13,6 +13,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/admin.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+
     {% block extra_css %}{% endblock %}
 </head>
 
@@ -22,7 +25,7 @@
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show bg-primary text-black" role="alert">
+                    <div class="alert alert-{{ category }} alert-dismissible fade show bg-primary text-white" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -35,8 +38,15 @@
         <aside id="sidebar" class="js-sidebar">
             <!-- Sidebar Content -->
             <div class="h-100">
-                <div class="p-3 fs-4">
-                    <a href="{{ url_for('main.admin_dashboard') }}" style="color: #719E31;">FowlTrak</a>
+                <div class="p-3 fs-3">
+                    <a href="{{ url_for('main.admin_dashboard') }}" style="color: #719E31; font-family: 'Playfair Display', serif;">
+                        <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="FowlTrak Logo"
+            class="img-fluid"
+            width="50"
+            height="30"
+          />FowlTrak</a>
                 </div>
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">

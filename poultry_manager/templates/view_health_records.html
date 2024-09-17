@@ -22,7 +22,7 @@
                     <td>{{ health_record.symptom }}</td>
                     <td>{{ health_record.medication_given }}</td>
                     <td>{{ health_record.date_reported.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ health_record.user.username }}</td>
+                    <td>{{ health_record.created_by_username }}</td>
                     <td>
                         <a href="{{ url_for('main.edit_record', model='health_record', record_id=health_record.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2"

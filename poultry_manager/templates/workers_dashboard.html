@@ -1,135 +1,15 @@
 {% extends 'base_workers_dashboard.html' %}
+
 {% block content %}
-<style>
-    /* Custom Styles for Dashboard */
-    body {
-        font-family: 'Poppins', sans-serif;
-        display: flex;
-        min-height: 100vh;
-        flex-direction: column;
-        background-color: #186B2E;
-        overflow-x: hidden;
-        height: 100%;
-    }
-
-    .wrapper {
-        display: flex;
-        height: 100%;
-    }
-
-    /* Sidebar Styles */
-    .sidebar {
-        width: 250px;
-        background-color: #343a40;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding-top: 60px;
-    }
-
-    .sidebar .nav-link {
-        color: #adb5bd;
-        padding: 15px 20px;
-        display: block;
-        transition: background 0.3s, color 0.3s;
-    }
-
-    .sidebar .nav-link:hover {
-        background-color: #495057;
-        color: #fff;
-    }
-
-    .sidebar .active {
-        background-color: #007bff;
-        color: #fff;
-    }
-
-    /* Content Styles */
-    .content {
-        margin-left: 200px;
-        width: calc(100% - 260px);
-        padding: 20px;
-        flex-grow: 1;
-        overflow: auto;
-    }
-
-    /* Card Styles */
-    .card-custom {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
-        height: 100%;
-    }
-
-    .card-custom:hover {
-        transform: scale(1.05);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .content {
-            margin-left: 0;
-            width: 100%;
-            padding: 20px;
-        }
-        .sidebar {
-            display: none;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .card-custom .card-body {
-            padding: 10px;
-        }
-
-        .sidebar .nav-link {
-            padding: 10px 15px;
-        }
-    }
-</style>
 
 <div class="wrapper">
-    <!-- Sidebar -->
-    <nav class="sidebar d-none d-lg-block">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ url_for('main.worker_dashboard') }}">
-                    <i class="fa-solid fa-tachometer-alt me-2"></i> Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.add_inventory') }}">
-                    <i class="fa-solid fa-boxes me-2"></i> Inventory
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.add_production') }}">
-                    <i class="fa-solid fa-egg me-2"></i> Production
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.add_health_record') }}">
-                    <i class="fa-solid fa-heartbeat me-2"></i> Health Monitoring
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('main.add_flock') }}">
-                    <i class="fa-solid fa-seedling me-2"></i> Flock Records
-                </a>
-            </li>
-        </ul>
-        <div class="mt-5 p-3 text-white">
-            Logged in as: <strong>{{ role }}</strong>
-        </div>
-    </nav>
 
     <!-- Main Content -->
     <div class="content">
         <!-- Welcome Message -->
-        <div class="welcome-message text-white">
-            <h1>Welcome to Your Farm Dashboard!</h1>
-            <p class="lead">Use the dashboard to enter daily farm activities efficiently.</p>
+        <div class="welcome-message">
+            <h1 class="text-warning">Welcome to Your Farm Dashboard!</h1>
+            <p class="lead text-light">Use the dashboard to enter daily farm activities.</p>
         </div>
 
         <!-- Cards Section -->
@@ -169,10 +49,10 @@
 
             <!-- Flock Records Card -->
             <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div class="card card-custom text-white bg-warning">
+                <div class="card card-custom text-white bg-dark">
                     <div class="card-body">
                         <h5 class="card-title text-center"><i class="fa-solid fa-seedling"></i> Flock Records</h5>
-                        <p class="card-text text-center">Track flock details and performance.</p>
+                        <p class="card-text text-center">Track flock performance.</p>
                         <a href="{{ url_for('main.add_flock') }}" class="btn btn-light d-block">Go to Flock Records</a>
                     </div>
                 </div>
