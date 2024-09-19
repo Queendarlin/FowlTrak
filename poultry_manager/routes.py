@@ -41,7 +41,7 @@ def register_page():
         db.session.add(user_to_create)
         db.session.commit()
         login_user(user_to_create)
-        flash(f"Account successfully created! You are logged in as: {user_to_create.username}", category='success')
+        flash(f"Account successfully created! Your username is: {user_to_create.username}", category='success')
         return redirect(url_for('main.login_page'))
     if form.errors:
         for field, err_msgs in form.errors.items():
