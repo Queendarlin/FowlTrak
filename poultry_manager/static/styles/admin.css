@@ -139,7 +139,7 @@ html[data-bs-theme="light"] .theme-toggle .bi-sun {
 
 .flash-message {
     position: fixed;
-    top: 70px;
+    top: 80px;
     left: 0;
     right: 0;
     z-index: 1;

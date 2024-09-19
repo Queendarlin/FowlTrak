@@ -35,4 +35,7 @@ def create_app():
     from .routes import bp
     app.register_blueprint(bp)
 
+    # Disable strict slashes for URL routing
+    app.url_map.strict_slashes = False
+
     return app
