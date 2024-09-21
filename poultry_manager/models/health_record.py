@@ -50,3 +50,4 @@ class HealthRecord(BaseModel):
     def __repr__(self):
         """String representation of the health record."""
         return f'<Health Record Date: {self.date_reported}, Symptoms: {self.symptom}>'
+
