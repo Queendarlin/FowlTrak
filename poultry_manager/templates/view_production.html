@@ -1,9 +1,11 @@
-{% extends "base_admin.html" %}
+<!-- Template to display production records -->
+
+{% extends "base_admin.html" %} {% block title %} View Production Record {% endblock %}
 
 {% block content %}
 <div class="container">
     <h1 class="my-4">Production Records</h1>
-    <!-- Add table-responsive class for responsiveness -->
+    <!-- Responsive table for displaying records -->
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-sm">
             <thead class="thead-dark">
@@ -23,12 +25,14 @@
                     <td>{{ production.date_collected.strftime('%Y-%m-%d') }}</td>
                     <td>{{ production.created_by_username }}</td>
                     <td>
+                        <!-- Edit button that triggers a modal for editing the record -->
                         <a href="{{ url_for('main.edit_record', model='production', record_id=production.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2"
                            data-bs-toggle="modal" data-bs-target="#editModal"
                            aria-label="Edit production record for {{ production.number_eggs_collected }} eggs collected">
                            Edit
                         </a>
+                        <!-- Delete button that triggers a confirmation for deletion -->
                         <a href="{{ url_for('main.delete_record', model='production', record_id=production.id) }}"
                            class="btn btn-sm btn-danger delete-button d-inline-block m-2"
                            data-delete-url="{{ url_for('main.delete_record', model='production', record_id=production.id) }}"

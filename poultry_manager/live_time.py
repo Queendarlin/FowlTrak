@@ -1,15 +1,12 @@
 """
-live_time.py
+This module defines the `NetworkTime` class, which is responsible for retrieving the current time
+from an NTP (Network Time Protocol) server. If the NTP server request fails, it falls back to the
+local system time. The primary use case is to ensure that the system gets accurate network time
+when available, and otherwise defaults to the local system time in UTC.
 
-This module provides a class `NetworkTime` that includes a static method
-for fetching the current time from an NTP server. If the NTP server request
-fails, it falls back to the local system time.
-
-Keyword arguments:
-- None
-
-Return:
-- datetime: The current network time if available, otherwise local time.
+Dependencies:
+    - datetime: For managing time and date objects.
+    - ntplib: For making requests to an NTP server to retrieve network time.
 """
 
 from datetime import datetime, timezone
@@ -18,22 +15,32 @@ import ntplib
 
 
 class NetworkTime:
+    """
+        A class that retrieves the current time from an NTP (Network Time Protocol) server.
+        If the request fails, it falls back to the local system time.
+    """
     @staticmethod
     def network_time() -> datetime:
-        """Fetches the current time from an NTP server.
+        """
+            Retrieve the current time from the 'time.windows.com' NTP server.
+           If the request to the server fails, the local system time is returned instead.
 
-            Attempts to connect to an NTP server and return the current time in UTC.
-            If the connection fails, returns the local system time instead.
-
-            Returns:
-                datetime: The current network time if available, otherwise local time.
+           Returns:
+               datetime: The current time as a timezone-aware UTC datetime object.
         """
         try:
+            # Create an NTP client instance
             client = ntplib.NTPClient()
+
+            # Send a request to the NTP server and get the response
             response = client.request('time.windows.com', version=3)
+
+            # Convert the NTP time (response.tx_time) to a UTC datetime object
             network_time = datetime.fromtimestamp(
                 response.tx_time, timezone.utc)
             return network_time
+
         except Exception:
+            # If an error occurs, fall back to the local system time in UTC
             network_time = datetime.now(timezone.utc)
             return network_time

@@ -1,8 +1,11 @@
-{% extends "base_admin.html" %}
+<!-- Template to display flock records -->
+
+{% extends "base_admin.html" %} {% block title %} View Flock Record {% endblock %}
+
 {% block content %}
 <div class="container">
     <h1 class="my-4">Flock Records</h1>
-    <!-- Add table-responsive class to make the table scrollable on smaller screens -->
+    <!-- Responsive table for displaying records -->
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-sm">
             <thead class="thead-dark">
@@ -28,11 +31,13 @@
                     <td>{{ flock.entry_date }}</td>
                     <td>{{ flock.created_by_username }}</td>
                     <td>
+                        <!-- Edit button that triggers a modal for editing the record -->
                         <a href="{{ url_for('main.edit_record', model='flock', record_id=flock.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2" data-bs-toggle="modal" data-bs-target="#editModal"
                            aria-label="Edit record for {{ flock.breed }}">
                            Edit
                         </a>
+                        <!-- Delete button that triggers a confirmation for deletion -->
                         <a href="{{ url_for('main.delete_record', model='flock', record_id=flock.id) }}"
                            class="btn btn-sm btn-danger delete-button d-inline-block m-2"
                            data-delete-url="{{ url_for('main.delete_record', model='flock', record_id=flock.id) }}"

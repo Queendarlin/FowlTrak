@@ -1,13 +1,11 @@
-{% extends 'base_admin.html' %}
+<!-- Template to display inventory records -->
 
-{% block title %}
-    View Inventory
-{% endblock %}
+{% extends 'base_admin.html' %} {% block title %} View Inventory Record {% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <h2 class="my-4">Inventory Records</h2>
-        <!-- Add table-responsive class for responsiveness -->
+        <!-- Responsive table for displaying records -->
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-sm">
                 <thead class="thead-dark">
@@ -35,12 +33,14 @@
                         <td>{{ inventory.purchase_date.strftime('%Y-%m-%d') }}</td>
                         <td>{{ inventory.created_by_username }}</td>
                         <td>
+                            <!-- Edit button that triggers a modal for editing the record -->
                             <a href="{{ url_for('main.edit_record', model='inventory', record_id=inventory.id) }}"
                                class="btn btn-primary btn-sm d-inline-block m-2"
                                data-bs-toggle="modal" data-bs-target="#editModal"
                                aria-label="Edit inventory record for {{ inventory.item_name }}">
                                Edit
                             </a>
+                            <!-- Delete button that triggers a confirmation for deletion -->
                             <a href="{{ url_for('main.delete_record', model='inventory', record_id=inventory.id) }}"
                                class="btn btn-danger btn-sm delete-button d-inline-block m-2"
                                data-delete-url="{{ url_for('main.delete_record', model='inventory', record_id=inventory.id) }}"

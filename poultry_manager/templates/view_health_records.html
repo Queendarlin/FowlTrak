@@ -1,8 +1,11 @@
-{% extends "base_admin.html" %}
+<!-- Template to display health records -->
+
+{% extends "base_admin.html" %} {% block title %} View Health Records {% endblock %}
+
 {% block content %}
 <div class="container">
     <h1 class="my-4">Health Records</h1>
-    <!-- Add table-responsive class for responsiveness -->
+    <!-- Responsive table for displaying records -->
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-sm">
             <thead class="thead-dark">
@@ -24,12 +27,14 @@
                     <td>{{ health_record.date_reported.strftime('%Y-%m-%d') }}</td>
                     <td>{{ health_record.created_by_username }}</td>
                     <td>
+                        <!-- Edit button that triggers a modal for editing the record -->
                         <a href="{{ url_for('main.edit_record', model='health_record', record_id=health_record.id) }}"
                            class="btn btn-sm btn-primary d-inline-block m-2"
                            data-bs-toggle="modal" data-bs-target="#editModal"
                            aria-label="Edit record for health report on {{ health_record.date_reported.strftime('%Y-%m-%d') }}">
                            Edit
                         </a>
+                        <!-- Delete button that triggers a confirmation for deletion -->
                         <a href="{{ url_for('main.delete_record', model='health_record', record_id=health_record.id) }}"
                            class="btn btn-sm btn-danger delete-button d-inline-block m-2"
                            data-delete-url="{{ url_for('main.delete_record', model='health_record', record_id=health_record.id) }}"

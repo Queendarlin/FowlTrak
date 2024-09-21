@@ -1,3 +1,5 @@
+<!-- Template for displaying the modal for editing records -->
+
 <form id="editForm" method="POST" action="{{ url_for('main.edit_record', model=model, record_id=record.id) }}">
     {{ form.hidden_tag() }}
 

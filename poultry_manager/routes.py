@@ -1,3 +1,15 @@
+"""
+This module defines the main routes and views for the Poultry Manager application.
+It includes user authentication, account management, and various dashboards for
+admin and worker roles. The routes also handle CRUD operations for inventory,
+production, flocks, and health records.
+
+Dependencies:
+    - Flask: For routing and rendering templates.
+    - Flask-Login: For user session management.
+    - SQLAlchemy: For database interactions.
+"""
+
 from flask import render_template, url_for, Blueprint, redirect, flash, jsonify
 from flask_login import logout_user, login_user, login_required, current_user
 from poultry_manager.forms import (RegisterForm, LoginForm, InventoryForm, ProductionForm, FlockForm, HealthRecordForm,
@@ -19,6 +31,9 @@ bp = Blueprint('main', __name__)
 def home_page():
     """
         Render the home page. Redirect authenticated users to their respective dashboards.
+
+        Returns:
+            Rendered template of the home page or redirect to the appropriate dashboard.
     """
     if current_user.is_authenticated:
         if current_user.is_admin():
@@ -33,8 +48,11 @@ def home_page():
 def register_page():
     """
         Handle user registration. Create a new user if the form is valid,
-        log them in, and redirect to the add task page.
-        """
+        log them in, and redirect to the login page.
+
+        Returns:
+            Rendered registration form or redirect to the login page on successful registration.
+    """
     form = RegisterForm()
     if form.validate_on_submit():
         user_to_create = User(username=form.username.data, email=form.email_address.data, password=form.password1.data)
@@ -55,6 +73,9 @@ def register_page():
 def login_page():
     """
         Handle user login. Authenticate and log in the user if the form is valid.
+
+        Returns:
+            Rendered login form or redirect to the appropriate dashboard on successful login.
     """
     form = LoginForm()
     if form.validate_on_submit():
@@ -79,6 +100,9 @@ def login_page():
 def logout_page():
     """
         Log out the current user.
+
+        Returns:
+            Redirect to the home page after logging out.
     """
     logout_user()
     flash('You have successfully logged out', category='info')
@@ -88,6 +112,13 @@ def logout_page():
 @bp.route('/account-settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
+    """
+        Manage account settings for the logged-in user. Update username and email,
+        and change password if provided.
+
+        Returns:
+            Rendered account settings form.
+    """
     form = AccountSettingsForm()
 
     if form.validate_on_submit():
@@ -112,7 +143,10 @@ def account_settings():
 @worker_required
 def worker_dashboard():
     """
-    Workers dashboard showing worker-specific options like adding inventory, viewing reports, etc.
+        Display the worker's dashboard with options specific to workers.
+
+        Returns:
+            Rendered worker's dashboard.
     """
     return render_template('workers_dashboard.html', username=current_user.username, role=current_user.role.value)
 
@@ -121,6 +155,12 @@ def worker_dashboard():
 @login_required
 @admin_or_worker_required
 def add_inventory():
+    """
+        Handle the addition of new inventory items. Redirect based on user role after adding.
+
+        Returns:
+            Rendered inventory form or redirect to the appropriate dashboard on successful addition.
+    """
     form = InventoryForm()
     if form.validate_on_submit():
         new_inventory = Inventory(
@@ -148,6 +188,12 @@ def add_inventory():
 @login_required
 @admin_or_worker_required
 def add_production():
+    """
+        Handle the addition of new production records. Redirect based on user role after adding.
+
+        Returns:
+            Rendered production form or redirect to the appropriate dashboard on successful addition.
+    """
     form = ProductionForm()
     if form.validate_on_submit():
         production_record = Production(
@@ -171,6 +217,12 @@ def add_production():
 @login_required
 @admin_or_worker_required
 def add_flock():
+    """
+        Handle the addition of new flock records. Redirect based on user role after adding.
+
+        Returns:
+            Rendered flock form or redirect to the appropriate dashboard on successful addition.
+    """
     form = FlockForm()
     if form.validate_on_submit():
         new_flock = Flock(
@@ -197,6 +249,12 @@ def add_flock():
 @login_required
 @admin_or_worker_required
 def add_health_record():
+    """
+        Handle the addition of new health records. Redirect based on user role after adding.
+
+        Returns:
+            Rendered health record form or redirect to the appropriate dashboard on successful addition.
+    """
     form = HealthRecordForm()
     if form.validate_on_submit():
         health_record = HealthRecord(
@@ -223,6 +281,9 @@ def add_health_record():
 def admin_dashboard():
     """
         Admin-only dashboard. View all records and perform management tasks.
+
+        Returns:
+            Rendered admin dashboard with all records.
     """
     # Fetch all data from the database
     workers = User.query.filter_by(role=RoleEnum.WORKER).all()
@@ -245,6 +306,12 @@ def admin_dashboard():
 @admin_required
 @login_required
 def manage_workers():
+    """
+        Render a page to manage workers, listing all users with worker roles.
+
+        Returns:
+            Rendered manage workers page with a list of workers.
+    """
     workers = User.query.all()  # Fetch all workers
     return render_template('manage_workers.html', workers=workers)
 
@@ -253,7 +320,15 @@ def manage_workers():
 @login_required
 @admin_required
 def promote_worker(user_id):
-    """Admin promotes a worker to admin"""
+    """
+        Admin promotes a worker to admin status.
+
+        Args:
+            user_id (int): ID of the user to be promoted.
+
+        Returns:
+            Redirect to manage workers page with a success or warning flash message.
+    """
     worker = User.query.get_or_404(user_id)
     if worker.is_admin():
         flash("User is already an admin.", "warning")
@@ -269,6 +344,15 @@ def promote_worker(user_id):
 @login_required
 @admin_required
 def demote_worker(user_id):
+    """
+        Admin demotes a user from admin status back to worker status.
+
+        Args:
+            user_id (int): ID of the user to be demoted.
+
+        Returns:
+            Redirect to manage workers page with a success or warning flash message.
+    """
     worker = User.query.get_or_404(user_id)
     if worker.is_worker():
         flash("User is already a worker.", "warning")
@@ -285,7 +369,13 @@ def demote_worker(user_id):
 @admin_required
 def delete_worker(user_id):
     """
-    Admin removes (deletes) a worker from the system.
+        Admin removes (deletes) a worker from the system.
+
+        Args:
+            user_id (int): The ID of the worker to be removed.
+
+        Returns:
+            Redirect to the manage workers page with a success message.
     """
     worker = User.query.get_or_404(user_id)
     db.session.delete(worker)
@@ -299,7 +389,15 @@ def delete_worker(user_id):
 @admin_required
 def edit_record(model, record_id):
     """
-    Admin edits a specific record based on the model.
+        Admin edits a specific record based on the model type provided.
+
+        Args:
+            model (str): The type of record to edit (e.g., 'inventory', 'production', 'flock', 'health_record').
+            record_id (int): The ID of the record to be edited.
+
+        Returns:
+            Rendered modal form for editing the record on GET requests,
+            or redirect to the admin dashboard on successful form submission.
     """
     if model == 'inventory':
         record = Inventory.query.get_or_404(record_id)
@@ -332,6 +430,17 @@ def edit_record(model, record_id):
 @login_required
 @admin_required
 def edit_record_modal(model, record_id):
+    """
+        Retrieve a specific record for editing based on the model type and record ID.
+
+        Args:
+            model (str): The type of the model (e.g., 'inventory', 'flock', 'production', 'health_record').
+            record_id (int): The unique identifier of the record to be edited.
+
+        Returns:
+            Rendered template for the modal form with the existing record data.
+    """
+
     # Query the correct record based on the model
     if model == 'inventory':
         record = Inventory.query.get(record_id)
@@ -355,8 +464,17 @@ def edit_record_modal(model, record_id):
 @admin_required
 def delete_record(model, record_id):
     """
-    Admin deletes a specific record based on the model.
+        Delete a specific record based on the model type.
+
+        Args:
+            model (str): The type of the model to delete (e.g., 'inventory', 'flock', 'production', 'health_record').
+            record_id (int): The unique identifier of the record to be deleted.
+
+        Returns:
+            Redirect to the admin dashboard with a flash message indicating success or failure.
     """
+
+    # Retrieve the record based on the model type
     if model == 'inventory':
         record = Inventory.query.get(record_id)
     elif model == 'production':
@@ -369,6 +487,7 @@ def delete_record(model, record_id):
         flash("Invalid model.", 'danger')
         return redirect(url_for('main.admin_dashboard'))
 
+    # Delete the record if found
     if record:
         db.session.delete(record)
         db.session.commit()
@@ -384,7 +503,10 @@ def delete_record(model, record_id):
 @admin_required
 def view_inventory():
     """
-    View all inventory records with the worker who entered each record.
+        Display all inventory records along with the worker who entered each record.
+
+        Returns:
+            Rendered template showing all inventory records.
     """
     inventories = Inventory.query.all()
     return render_template('view_inventory.html', inventories=inventories)
@@ -395,7 +517,10 @@ def view_inventory():
 @admin_required
 def view_flock():
     """
-    View all inventory records with the worker who entered each record.
+        Display all flock records along with the worker who entered each record.
+
+        Returns:
+            Rendered template showing all flock records.
     """
     flocks = db.session.query(Flock, User).join(User).all()
     return render_template('view_flock.html', flocks=flocks)
@@ -406,7 +531,10 @@ def view_flock():
 @admin_required
 def view_production():
     """
-    View all inventory records with the worker who entered each record.
+       Display all production records along with the worker who added them.
+
+       Returns:
+           Rendered template showing all production records.
     """
     # Query all production records along with the associated worker who added them
     productions = db.session.query(Production, User).join(User).all()
@@ -418,7 +546,10 @@ def view_production():
 @admin_required
 def view_health_record():
     """
-    View all inventory records with the worker who entered each record.
+        Display all health records along with the worker who entered each record.
+
+        Returns:
+            Rendered template showing all health records.
     """
     health_records = HealthRecord.query.all()
     return render_template('view_health_records.html', health_records=health_records)
@@ -428,6 +559,12 @@ def view_health_record():
 @login_required
 @admin_required
 def production_data():
+    """
+        API endpoint to retrieve production data for charting.
+
+        Returns:
+            JSON response containing dates and the number of eggs collected.
+    """
     productions = Production.query.all()
     data = {
         "labels": [p.date_collected.strftime("%Y-%m-%d") for p in productions],
@@ -440,6 +577,12 @@ def production_data():
 @login_required
 @admin_required
 def health_record_data():
+    """
+            API endpoint to retrieve health record data for charting.
+
+            Returns:
+                JSON response containing symptoms and their counts.
+    """
     records = HealthRecord.query.all()
     symptoms = {}
     for record in records:
@@ -457,6 +600,12 @@ def health_record_data():
 @login_required
 @admin_required
 def flock_data():
+    """
+        API endpoint to retrieve flock data for charting.
+
+        Returns:
+            JSON response containing breeds and their quantities.
+    """
     flocks = Flock.query.all()
     breeds = {}
     for flock in flocks:
